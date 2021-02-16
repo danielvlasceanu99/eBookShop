@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using EBookShop.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace EBookShop.Areas.Identity.Data
@@ -25,5 +26,12 @@ namespace EBookShop.Areas.Identity.Data
         [PersonalData]
         [Column(TypeName = "nvarchar(100)")]
         public string RecoveryEmail { get; set; }
+
+        // Relatioships
+        // Book relationship - many to many
+        public virtual ICollection<BookToUserAssociation> BookList { get; set; }
+
+        // Review relationship - one to many
+        public virtual ICollection<Review> ReviewList { get; set; }
     }
 }
