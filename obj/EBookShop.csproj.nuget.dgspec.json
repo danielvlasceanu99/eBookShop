@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\danie\\Desktop\\EBookShop\\EBookShop.csproj": {}
+    "C:\\Users\\danie\\Desktop\\eBookShop\\EBookShop.csproj": {}
   },
   "projects": {
-    "C:\\Users\\danie\\Desktop\\EBookShop\\EBookShop.csproj": {
+    "C:\\Users\\danie\\Desktop\\eBookShop\\EBookShop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\danie\\Desktop\\EBookShop\\EBookShop.csproj",
+        "projectUniqueName": "C:\\Users\\danie\\Desktop\\eBookShop\\EBookShop.csproj",
         "projectName": "EBookShop",
-        "projectPath": "C:\\Users\\danie\\Desktop\\EBookShop\\EBookShop.csproj",
+        "projectPath": "C:\\Users\\danie\\Desktop\\eBookShop\\EBookShop.csproj",
         "packagesPath": "C:\\Users\\danie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\danie\\Desktop\\EBookShop\\obj\\",
+        "outputPath": "C:\\Users\\danie\\Desktop\\eBookShop\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\danie\\AppData\\Roaming\\NuGet\\NuGet.Config",
