@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EBookShop.Data;
+using EBookShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ namespace EBookShop.Controllers
         {
             _context = context;
         }
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -31,6 +33,19 @@ namespace EBookShop.Controllers
             }
 
             return View(book);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateReview([Bind("Id,Text,Rating,BookID,GenreID")] Review review)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(review);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details));
+            }
+            return View(review);
         }
     }
 }
