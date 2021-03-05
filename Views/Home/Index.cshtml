@@ -3,9 +3,8 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-md-left">
+    <h1 class="display-4">Books</h1>
 </div>
 
 <form asp-controller="Home" asp-action="Index" method="get">
@@ -21,3 +20,83 @@
         <input type="submit" value="Search" class="btn btn-primary" />
     </div>
 </form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].ISBN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].OriginalLanguage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].Author.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].GenreList)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Books.Count; i++)
+        {
+        <tr>
+            <td>
+                @(i+1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Books[i].ISBN)
+            </td>
+            <td>
+                <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.Books[i].Id">
+                    @Html.DisplayFor(modelItem => Model.Books[i].Title)
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Books[i].Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Books[i].Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Books[i].OriginalLanguage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Books[i].Price)
+            </td>
+
+            @*Placeholders*@"
+            <td>
+                @Html.DisplayFor(modelItem => Model.Books[i].Author.Name)
+            </td>
+            <td>
+                @foreach(GenreToBookAssociation g in Model.Books[i].GenreList)
+                {
+                    <span>@g.Genre.GenreName</span>
+                }
+            </td>
+            @*<td> -- Need to implement Author Details
+            <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.Books[i].Id">
+                @Html.DisplayFor(modelItem => Model.Books[i].Title)
+            </a>
+            </td>*@
+        </tr>
+        }
+    </tbody>
+</table>
