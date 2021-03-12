@@ -11,12 +11,7 @@ namespace  EBookShop.Models
         // Relatioships
         // Book relationship - many to many
         public virtual ICollection<GenreToBookAssociation> BookLsit { get; set; }
-        
-        public Genre(string genreName)
-        {
-            this.GenreName = GenreName;
-        }
-
+     
         public bool Equals(Genre other)
         {
             if (other == null)

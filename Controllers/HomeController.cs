@@ -29,24 +29,27 @@ namespace EBookShop.Controllers
         public async Task<IActionResult> Index(string bookGenre, string searchString)
         {
             IQueryable<string> genreQuery = from genres in _context.Genre select genres.GenreName;
-            var books = from book in _context.Book select book;
+            var books = _context.Book.Include(x => x.Author)
+                .Include(x => x.GenreList).ThenInclude(x => x.Genre).ToList();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                books = books.Where(b => b.Title.Contains(searchString));
+                books = books.Where(b => b.Title.Contains(searchString)).ToList();
             }
 
             if (!string.IsNullOrEmpty(bookGenre))
             {
                 GenreToBookAssociation gtb = new GenreToBookAssociation();
-                gtb.Genre = new Genre(bookGenre);
-                books = books.Where(b => b.GenreList.Contains(gtb));
+                Genre g = new Genre();
+                g.GenreName = bookGenre;
+                gtb.Genre = g;
+                books = books.Where(b => b.GenreList.Contains(gtb)).ToList();
             }
 
             var bookListVM = new BookListViewModel
             {
                 Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                Books = await books.ToListAsync()
+                Books = books
             };
 
             return View(bookListVM);

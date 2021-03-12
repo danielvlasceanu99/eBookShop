@@ -41,6 +41,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Books[0].OriginalLanguage)
+                
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Books[0].Price)
@@ -69,7 +70,7 @@
                 </a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => Model.Books[i].Description)
+                @(Model.Books[i].Description.Substring(0, 90)+"...")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => Model.Books[i].Rating)
@@ -81,7 +82,7 @@
                 @Html.DisplayFor(modelItem => Model.Books[i].Price)
             </td>
 
-            @*Placeholders*@"
+            @*Placeholders*@
             <td>
                 @Html.DisplayFor(modelItem => Model.Books[i].Author.Name)
             </td>
