@@ -39,11 +39,7 @@ namespace EBookShop.Controllers
 
             if (!string.IsNullOrEmpty(bookGenre))
             {
-                GenreToBookAssociation gtb = new GenreToBookAssociation();
-                Genre g = new Genre();
-                g.GenreName = bookGenre;
-                gtb.Genre = g;
-                books = books.Where(b => b.GenreList.Contains(gtb)).ToList();
+                books = books.Where(b => b.CheckGenre(bookGenre)).ToList();
             }
 
             var bookListVM = new BookListViewModel

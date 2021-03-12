@@ -26,5 +26,17 @@ namespace  EBookShop.Models
         // Author relationship - one to many
         public int AuthorID { get; set; }
         public Author Author { get; set; }
+
+        public bool CheckGenre(string bookgenre)
+        {
+            foreach(GenreToBookAssociation gtb in this.GenreList)
+            {
+                if(string.Equals(gtb.Genre.GenreName, bookgenre))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

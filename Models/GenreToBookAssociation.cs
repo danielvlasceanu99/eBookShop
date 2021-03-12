@@ -9,14 +9,5 @@ namespace  EBookShop.Models
 
         public int GenreID{ get; set; }
         public Genre Genre { get; set;}
-
-        public bool Equals(GenreToBookAssociation other)
-        {
-            if (other == null)
-            { 
-                return false;
-            }
-            return (this.Genre.Equals(other.Genre));
-        }
     }
 }
