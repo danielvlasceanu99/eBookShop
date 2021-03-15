@@ -51,8 +51,8 @@
                     @foreach (Review review in Model.ReviewList)
                     {
                         <div class="media">
-                            @{string srcAuthor = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
-                            <img src=@srcAuthor class="align-self-start mr-3" style="width:60px; height:60px">
+                            @{string srcUser = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
+                            <img src=@srcUser class="align-self-start mr-3" style="width:60px; height:60px">
                             <div class="media-body">
                                 <h5>@review.User.FirstName @review.User.LastName</h5>
                                 <p>@review.Text</p>
@@ -83,6 +83,8 @@
         <p class="text-uppercase">About @Model.Author.Name</p>
 
         <div class="ebs-author-card text-justify">
+            @{string srcAuthor = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
+            <img src=@srcAuthor class="mx-auto d-block" style="width:150px; height:150px">
             <div>
                 <h5>@Model.Author.Name</h5>
                 <em class="small">@Model.Author.ShortDesctiption</em>
