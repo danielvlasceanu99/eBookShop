@@ -13,39 +13,30 @@
             <option value="">Genre: All</option>
         </select>
         <input type="text" name="SearchString" class="form-control col-md-8" placeholder="Title:" />
-        <input type="submit" value="Search" class="btn btn-light col-md-1" />
+        <input type="submit" value="Search" class="btn btn-secondary col-md-1" />
     </div>
-    @*<div class="row">
-        <div class="col-md-3">
-            <input type="text" name="SearchString" class="form-control" placeholder="Title:" />
-        </div>
-        <div class="col-md-2" display>
-            <select asp-for="BookGenre" asp-items="Model.Genres" class="form-control">
-                <option value="">Genre: All</option>
-            </select>
-        </div>
-        <input type="submit" value="Search" class="btn btn-light" />
-    </div>*@
 </form>
 
-<div class="list-group list-group-flush">
+<div>
     @for (int i = 0; i < Model.Books.Count; i++)
     {
         <div class="media p-3">
-            <img src="https://drive.google.com/uc?export=view&id=1rC4i3rSX3bYggJq4nDPJfdWCvWdBdixG" class="align-self-center mr-3 mt-3" width="115" height="150" alt=@Model.Books[i].Title>
+            @{string src = "https://drive.google.com/uc?export=view&id=" + "1rC4i3rSX3bYggJq4nDPJfdWCvWdBdixG"; }
+            <img src=@src class="align-self-center mr-3 mt-3" width="130" height="160" alt=@Model.Books[i].Title>
             <div class="media-body">
-                <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.Books[i].Id" class="list-group-item list-group-item-action">
-                    <h4 class="list-group-item-heading d-flex justify-content-between align-items-center">
-                        <p>@Model.Books[i].Title <small>(ISBN13: @Model.Books[i].ISBN)</small></p>
-                        <span class="badge">@Model.Books[i].Price$</span>
-                    </h4>
-                    <p class="list-group-item-text">by @Model.Books[i].Author.Name</p>
-                    <p class="list-group-item-text font-weight-normal">Goodreads rating: @Model.Books[i].Rating/5</p>
-                    @foreach (GenreToBookAssociation g in Model.Books[i].GenreList)
-                    {
-                        <span class="badge badge-secondary">@g.Genre.GenreName</span>
-                    }
-                </a>
+                <h4 class="d-flex justify-content-md-between align-items-md-start">
+                    <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.Books[i].Id" class="text-decoration-none text-dark">
+                        @Model.Books[i].Title
+                    </a>
+                    <span class="badge">@Model.Books[i].Price$</span>
+                </h4>
+                <small>ISBN: @Model.Books[i].ISBN</small>
+                <p>by @Model.Books[i].Author.Name</p>
+                <p class="font-weight-bold">Goodreads rating: @Model.Books[i].Rating/5</p>
+                @foreach (GenreToBookAssociation g in Model.Books[i].GenreList)
+                {
+                    <span class="badge badge-secondary">@g.Genre.GenreName</span>
+                }
             </div>
         </div>
     }

@@ -28,8 +28,11 @@ namespace EBookShop.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book
+            var book = await _context.Book.Include(x => x.Author)
+                .Include(x => x.GenreList).ThenInclude(x => x.Genre)
+                .Include(x=>x.ReviewList).ThenInclude(x=>x.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (book == null)
             {
                 return NotFound();

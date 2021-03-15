@@ -3,61 +3,90 @@
     ViewData["Title"] = "Book details Page";
 }
 
-<h3>Details about @Model.Title</h3>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ISBN)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ISBN)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rating)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rating)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.OriginalLanguage)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.OriginalLanguage)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Author.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Author.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.GenreList)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.GenreList)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="media p-md-2">
+            @{string srcBook = "https://drive.google.com/uc?export=view&id=" + "1rC4i3rSX3bYggJq4nDPJfdWCvWdBdixG"; }
+            <img src=@srcBook class="align-self-start mr-3 mt-3" width="156" height="212" alt=@Model.Title>
+            <div class="media-body text-justify">
+                <h4 class="d-flex justify-content-md-between align-items-md-start">
+                    @Model.Title
+                    <span class="badge">@Model.Price$</span>
+                </h4>
+                <p>by @Model.Author.Name</p>
+                <h5 class="font-weight-bold">Description:</h5>
+                <em>@Model.Description</em>
+                <br />
+                <br />
+                <div>
+                    <a href="#info" class="text-decoration-none text-dark font-weight-bold" data-toggle="collapse">More info</a>
+                    <div id="info" class="collapse">
+                        <div class="font-weight-light">ISBN: @Model.ISBN</div>
+                        <div class="font-weight-light">Goodreads rating: @Model.Rating/5</div>
+                        <div class="font-weight-light">Original language: @Model.OriginalLanguage</div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <hr />
+                        <h5 class="font-weight-bold">Preview</h5>
+                        <embed frameborder="1" scrolling="no" width="480" height="610"
+                               src="https://drive.google.com/file/d/1gW1twdVQPD4ZSakNr4-Me4Z4sB14ZCBx/preview" />
+                    </div>
+                </div>
+                <div>
+                    <hr />
+                    <h5>@Model.ReviewList.Count Reviews</h5>
+                    <form asp-controller="TODO" asp-action="TODO" method="post">
+                        <textarea name="TODO" rows="4" cols="89" style="resize:vertical" placeholder="Write a review about @Model.Title..."></textarea>
+                        <div class="d-flex justify-content-end">
+                            <input type="submit" value="Post review" class="btn btn-secondary" />
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <br />
+                    <hr />
+                    @foreach (Review review in Model.ReviewList)
+                    {
+                        <div class="media">
+                            @{string srcAuthor = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
+                            <img src=@srcAuthor class="align-self-start mr-3" style="width:60px; height:60px">
+                            <div class="media-body">
+                                <h5>@review.User.FirstName @review.User.LastName</h5>
+                                <p>@review.Text</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div>
+            <form sp-controller="TODO" asp-action="TODO" method="post">
+                <button class="btn btn-secondary btn-lg btn-block">
+                    Get the book
+                </button>
+            </form>
+            <hr />
+        </div>
+        <h5>Genres</h5>
+        @foreach (GenreToBookAssociation g in Model.GenreList)
+        {
+            <span class="badge badge-secondary">@g.Genre.GenreName</span>
+        }
+        <br />
+        <hr />
+        <p class="text-uppercase">About @Model.Author.Name</p>
+
+        <div class="ebs-author-card text-justify">
+            <div>
+                <h5>@Model.Author.Name</h5>
+                <em class="small">@Model.Author.ShortDesctiption</em>
+            </div>
+        </div>
+    </div>
 </div>

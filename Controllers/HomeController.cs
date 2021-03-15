@@ -29,8 +29,8 @@ namespace EBookShop.Controllers
         public async Task<IActionResult> Index(string bookGenre, string searchString)
         {
             IQueryable<string> genreQuery = from genres in _context.Genre select genres.GenreName;
-            var books = _context.Book.Include(x => x.Author)
-                .Include(x => x.GenreList).ThenInclude(x => x.Genre).ToList();
+            var books = await _context.Book.Include(x => x.Author)
+                .Include(x => x.GenreList).ThenInclude(x => x.Genre).ToListAsync();
 
             if (!string.IsNullOrEmpty(searchString))
             {
