@@ -1,0 +1,16 @@
+﻿@model EBookShop.Models.Author
+@{
+    ViewData["Title"] = "Author details Page";
+}
+
+<div>
+    <div>@Model.Name</div>
+    <div>@Model.PlaceAOfBirth</div>
+    <div>@Model.ShortDesctiption</div>
+    <div>@Model.DateOfBirth</div>
+    <div>@Model.DateOfDeath</div>
+    @foreach(Book b in Model.BookList)
+    {
+        <div>@b.Title</div>
+    }
+</div>

@@ -12,10 +12,10 @@ namespace EBookShop.Controllers
 {
     public class BookDetailsController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<BookDetailsController> _logger;
         private readonly EBookShopAuthContext _context;
 
-        public BookDetailsController(ILogger<HomeController> logger, EBookShopAuthContext context)
+        public BookDetailsController(ILogger<BookDetailsController> logger, EBookShopAuthContext context)
         {
             _logger = logger;
             _context = context;

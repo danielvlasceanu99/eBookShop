@@ -169,3 +169,4 @@ C:\Users\danie\Desktop\EBookShop\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pa
 C:\Users\danie\Desktop\EBookShop\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
 C:\Users\danie\Desktop\EBookShop\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LoginPartial.cshtml.g.cs
 C:\Users\danie\Desktop\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\BookDetails\Details.cshtml.g.cs
+C:\Users\danie\Desktop\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\AuthorDetails\Details.cshtml.g.cs

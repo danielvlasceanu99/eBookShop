@@ -86,7 +86,11 @@
             @{string srcAuthor = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
             <img src=@srcAuthor class="mx-auto d-block" style="width:150px; height:150px">
             <div>
-                <h5>@Model.Author.Name</h5>
+                <h5>
+                    <a asp-controller="AuthorDetails" asp-action="Details" asp-route-id="@Model.Author.Id" class="text-decoration-none text-dark">
+                        @Model.Author.Name
+                    </a>
+                </h5>
                 <em class="small">@Model.Author.ShortDesctiption</em>
             </div>
         </div>
