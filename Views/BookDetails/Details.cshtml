@@ -41,15 +41,21 @@
                 </div>
                 <div>
                     <hr />
-                    <h5>@Model.Book.ReviewList.Count Reviews</h5>
-                    @if (@Model.Book.ReviewList.Count == 0)
+                    <h5>
+                        @Model.Book.ReviewList.Count Reviews
+                        @if (@Model.Book.ReviewList.Count == 0)
+                        {
+                            <small>Be the first to review this book</small>
+                        }
+                    </h5>
+                    @*@if (@Model.Book.ReviewList.Count == 0)
                     {
                         <h5><small>Be the first to review this book</small></h5>
-                    }
+                    }*@
                     <form asp-controller="ReviewCreate" asp-action="CreateReview">
                         <input type="hidden" asp-for=@Model.Review.BookID value="@Model.Book.Id" />
                         <input type="hidden" asp-for=@Model.Review.UserID value="@UserManager.GetUserId(User)" />
-                        <textarea asp-for="@Model.Review.Text" id="text" rows="4" cols="89" style="resize:vertical" placeholder="Write a review about @Model.Book.Title..."></textarea>
+                        <textarea asp-for="@Model.Review.Text" id="text" rows="4" cols="89" style="resize:none" placeholder="Write a review about @Model.Book.Title..."></textarea>
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <div class="d-flex justify-content-end">

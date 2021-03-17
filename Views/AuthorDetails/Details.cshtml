@@ -3,14 +3,60 @@
     ViewData["Title"] = "Author details Page";
 }
 
-<div>
-    <div>@Model.Name</div>
-    <div>@Model.PlaceAOfBirth</div>
-    <div>@Model.ShortDesctiption</div>
-    <div>@Model.DateOfBirth</div>
-    <div>@Model.DateOfDeath</div>
-    @foreach(Book b in Model.BookList)
-    {
-        <div>@b.Title</div>
-    }
+@using System.Globalization;
+
+<div class="row">
+    <div class="col-lg-3">
+        @{string srcAuthor = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
+        <img src=@srcAuthor class="mx-auto d-block" style="width:200px; height:200px">
+    </div>
+    <div class="col-lg-9">
+        <h4>About @Model.Name</h4>
+        <hr />
+        <div>
+            <table>
+                <tbody class="table-borderless">
+                    <tr>
+                        <td class="ebs-margin-right"><h5><small class="font-weight-bold">Place of birth</small></h5></td>
+                        <td><h5><small>in @Model.PlaceAOfBirth</small></h5></td>
+                    </tr>
+                    <tr>
+                        <td class="ebs-margin-right"><h5><small class="font-weight-bold">Date of birth</small></h5></td>
+                        <td><h5><small>@Model.DateOfBirth.ToString("dd MMMM yyyy", new CultureInfo("en-UK"))</small></h5></td>
+                    </tr>
+                    @if (Model.DateOfDeath != null)
+                    {
+                        <tr>
+                            <td class="ebs-margin-right"><h5><small class="font-weight-bold">Date of death</small></h5></td>
+                            <td><h5><small>@Model.DateOfDeath.ToString("dd MMMM yyyy")</small></h5></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <div class="text-justify">
+            <em>@Model.ShortDesctiption</em>
+        </div>
+        <br />
+        <br />
+        <p class="text-uppercase">@Model.Name's books</p>
+        <div>
+            @foreach (Book book in Model.BookList)
+            {
+                <hr />
+                <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@book.Id" class="text-decoration-none text-dark">
+                    <div class="media p-3">
+                        @{string srcBook = "https://drive.google.com/uc?export=view&id=" + "1rC4i3rSX3bYggJq4nDPJfdWCvWdBdixG"; }
+                        <img src=@srcBook class="align-self-start  mr-3" style="width:50px; height:75px" alt=@book.Title>
+                        <div class="media-body">
+                            <h4>@book.Title</h4>
+                            <p class="font-weight-bold">Goodreads rating: @book.Rating/5</p>
+                        </div>
+                    </div>
+                </a>
+
+            }
+        </div>
+    </div>
 </div>
