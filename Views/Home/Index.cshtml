@@ -28,10 +28,12 @@
                     <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.Books[i].Id" class="text-decoration-none text-dark">
                         @Model.Books[i].Title
                     </a>
-                    <span class="badge">@Model.Books[i].Price$</span>
+                    <span class="badge">&euro;@Model.Books[i].Price</span>
                 </h4>
                 <small>ISBN: @Model.Books[i].ISBN</small>
-                <p>by @Model.Books[i].Author.Name</p>
+                <p>by <a asp-controller="AuthorDetails" asp-action="Details" asp-route-id="@Model.Books[i].Author.Id" class="text-decoration-none text-dark">
+                        @Model.Books[i].Author.Name
+                    </a></p>
                 <p class="font-weight-bold">Goodreads rating: @Model.Books[i].Rating/5</p>
                 @foreach (GenreToBookAssociation g in Model.Books[i].GenreList)
                 {

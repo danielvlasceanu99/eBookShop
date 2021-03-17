@@ -1,30 +1,34 @@
-﻿@model EBookShop.Models.Book
+﻿@model EBookShop.ViewModels.BookDetailesViewModel
 @{
     ViewData["Title"] = "Book details Page";
 }
 
+@using Microsoft.AspNetCore.Identity
+@using EBookShop.Areas.Identity.Data
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 <div class="row">
     <div class="col-md-9">
         <div class="media p-md-2">
             @{string srcBook = "https://drive.google.com/uc?export=view&id=" + "1rC4i3rSX3bYggJq4nDPJfdWCvWdBdixG"; }
-            <img src=@srcBook class="align-self-start mr-3 mt-3" width="156" height="212" alt=@Model.Title>
+            <img src=@srcBook class="align-self-start mr-3 mt-3" width="156" height="212" alt=@Model.Book.Title>
             <div class="media-body text-justify">
                 <h4 class="d-flex justify-content-md-between align-items-md-start">
-                    @Model.Title
-                    <span class="badge">@Model.Price$</span>
+                    @Model.Book.Title
+                    <span class="badge">@Model.Book.Price$</span>
                 </h4>
-                <p>by @Model.Author.Name</p>
+                <p>by @Model.Book.Author.Name</p>
                 <h5 class="font-weight-bold">Description:</h5>
-                <em>@Model.Description</em>
+                <em>@Model.Book.Description</em>
                 <br />
                 <br />
                 <div>
                     <a href="#info" class="text-decoration-none text-dark font-weight-bold" data-toggle="collapse">More info</a>
                     <div id="info" class="collapse">
-                        <div class="font-weight-light">ISBN: @Model.ISBN</div>
-                        <div class="font-weight-light">Goodreads rating: @Model.Rating/5</div>
-                        <div class="font-weight-light">Original language: @Model.OriginalLanguage</div>
+                        <div class="font-weight-light">ISBN: @Model.Book.ISBN</div>
+                        <div class="font-weight-light">Goodreads rating: @Model.Book.Rating/5</div>
+                        <div class="font-weight-light">Original language: @Model.Book.OriginalLanguage</div>
                     </div>
                 </div>
                 <div>
@@ -37,18 +41,33 @@
                 </div>
                 <div>
                     <hr />
-                    <h5>@Model.ReviewList.Count Reviews</h5>
-                    <form asp-controller="TODO" asp-action="TODO" method="post">
-                        <textarea name="TODO" rows="4" cols="89" style="resize:vertical" placeholder="Write a review about @Model.Title..."></textarea>
-                        <div class="d-flex justify-content-end">
-                            <input type="submit" value="Post review" class="btn btn-secondary" />
-                        </div>
+                    <h5>@Model.Book.ReviewList.Count Reviews</h5>
+                    @if (@Model.Book.ReviewList.Count == 0)
+                    {
+                        <h5><small>Be the first to review this book</small></h5>
+                    }
+                    <form asp-controller="ReviewCreate" asp-action="CreateReview">
+                        <input type="hidden" asp-for=@Model.Review.BookID value="@Model.Book.Id" />
+                        <input type="hidden" asp-for=@Model.Review.UserID value="@UserManager.GetUserId(User)" />
+                        <textarea asp-for="@Model.Review.Text" id="text" rows="4" cols="89" style="resize:vertical" placeholder="Write a review about @Model.Book.Title..."></textarea>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <div class="d-flex justify-content-end">
+                                <input id="submit" type="submit" value="Post review" class="btn btn-secondary" onclick="() => { console.log('mere') }" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex justify-content-end">
+                                <input type="submit" asp-area="Identity" asp-page="/Account/Login" value="Post review" class="btn btn-secondary" />
+                            </div>
+                        }
                     </form>
                 </div>
                 <div>
                     <br />
                     <hr />
-                    @foreach (Review review in Model.ReviewList)
+                    @foreach (Review review in Model.Book.ReviewList)
                     {
                         <div class="media">
                             @{string srcUser = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
@@ -61,7 +80,7 @@
                     }
                 </div>
             </div>
-            
+
         </div>
     </div>
     <div class="col-md-3">
@@ -74,25 +93,46 @@
             <hr />
         </div>
         <h5>Genres</h5>
-        @foreach (GenreToBookAssociation g in Model.GenreList)
+        @foreach (GenreToBookAssociation g in Model.Book.GenreList)
         {
             <span class="badge badge-secondary">@g.Genre.GenreName</span>
         }
         <br />
         <hr />
-        <p class="text-uppercase">About @Model.Author.Name</p>
+        <p class="text-uppercase">About @Model.Book.Author.Name</p>
 
         <div class="ebs-author-card text-justify">
             @{string srcAuthor = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
             <img src=@srcAuthor class="mx-auto d-block" style="width:150px; height:150px">
             <div>
                 <h5>
-                    <a asp-controller="AuthorDetails" asp-action="Details" asp-route-id="@Model.Author.Id" class="text-decoration-none text-dark">
-                        @Model.Author.Name
+                    <a asp-controller="AuthorDetails" asp-action="Details" asp-route-id="@Model.Book.Author.Id" class="text-decoration-none text-dark">
+                        @Model.Book.Author.Name
                     </a>
                 </h5>
-                <em class="small">@Model.Author.ShortDesctiption</em>
+                <em class="small">@Model.Book.Author.ShortDesctiption</em>
             </div>
         </div>
     </div>
 </div>
+
+@section Script{
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if ("@UserManager.GetUserId(User)" !== "") {
+            let tArea = document.getElementById("text");
+            let subButton = document.getElementById("submit")
+            subButton.disabled = true;
+            tArea.oninput = () => {
+                console.log("merge")
+                if (tArea.value === "") {
+                    subButton.disabled = true;
+                }
+                else {
+                    subButton.disabled = false;
+                }
+            }
+        }
+    })
+    </script>
+}

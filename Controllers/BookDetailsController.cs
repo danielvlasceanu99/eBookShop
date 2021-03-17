@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EBookShop.Data;
 using EBookShop.Models;
+using EBookShop.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -37,21 +39,12 @@ namespace EBookShop.Controllers
             {
                 return NotFound();
             }
-
-            return View(book);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateReview([Bind("Id,Text,Rating,BookID,GenreID")] Review review)
-        {
-            if (ModelState.IsValid)
+            var BookDetailsVM = new BookDetailesViewModel
             {
-                _context.Add(review);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details));
-            }
-            return View(review);
+                Book = book
+            };
+
+            return View(BookDetailsVM);
         }
     }
 }
