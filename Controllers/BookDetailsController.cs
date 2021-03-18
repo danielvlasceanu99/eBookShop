@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EBookShop.Data;
 using EBookShop.Models;
 using EBookShop.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,19 @@ namespace EBookShop.Controllers
             };
 
             return View(BookDetailsVM);
+        }
+        [Authorize, HttpPost]
+        public async Task<IActionResult> Details(BookDetailesViewModel model)
+        {
+            model.Review.Rating = 3;
+            if (ModelState.IsValid)
+            {
+                _context.Add(model.Review);
+                await _context.SaveChangesAsync();
+                //Redirect("/BookDetails/Details/"+model.Book.Id);
+                return RedirectToAction("Details", "BookDetails", new { id = model.Review.BookID });
+            }
+            return RedirectToAction("Details", "BookDetails", new { id = model.Review.BookID });
         }
     }
 }

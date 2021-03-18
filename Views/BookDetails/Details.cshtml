@@ -1,6 +1,6 @@
 ﻿@model EBookShop.ViewModels.BookDetailesViewModel
 @{
-    ViewData["Title"] = "Book details Page";
+    ViewData["Title"] = "Whatever";
 }
 
 @using Microsoft.AspNetCore.Identity
@@ -10,7 +10,7 @@
 
 <div class="row">
     <div class="col-md-9">
-        <div class="media p-md-2">
+        <div class="media">
             @{string srcBook = "https://drive.google.com/uc?export=view&id=" + "1rC4i3rSX3bYggJq4nDPJfdWCvWdBdixG"; }
             <img src=@srcBook class="align-self-start mr-3 mt-3" width="156" height="212" alt=@Model.Book.Title>
             <div class="media-body text-justify">
@@ -20,7 +20,9 @@
                 </h4>
                 <p>by @Model.Book.Author.Name</p>
                 <h5 class="font-weight-bold">Description:</h5>
-                <em>@Model.Book.Description</em>
+                <div class="col-md-12">
+                    <em>@Model.Book.Description</em>
+                </div>
                 <br />
                 <br />
                 <div>
@@ -48,26 +50,14 @@
                             <small>Be the first to review this book</small>
                         }
                     </h5>
-                    @*@if (@Model.Book.ReviewList.Count == 0)
-                    {
-                        <h5><small>Be the first to review this book</small></h5>
-                    }*@
-                    <form asp-controller="ReviewCreate" asp-action="CreateReview">
+                    <form asp-controller="BookDetails" asp-action="Details" method="post">
                         <input type="hidden" asp-for=@Model.Review.BookID value="@Model.Book.Id" />
                         <input type="hidden" asp-for=@Model.Review.UserID value="@UserManager.GetUserId(User)" />
+                        <input type="hidden" asp-for=@Model.Book value="@Model.Book" />
                         <textarea asp-for="@Model.Review.Text" id="text" rows="4" cols="89" style="resize:none" placeholder="Write a review about @Model.Book.Title..."></textarea>
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <div class="d-flex justify-content-end">
-                                <input id="submit" type="submit" value="Post review" class="btn btn-secondary" onclick="() => { console.log('mere') }" />
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="d-flex justify-content-end">
-                                <input type="submit" asp-area="Identity" asp-page="/Account/Login" value="Post review" class="btn btn-secondary" />
-                            </div>
-                        }
+                        <div class="d-flex justify-content-end">
+                            <input id="submit" type="submit" value="Post review" class="btn btn-secondary"/>
+                        </div>
                     </form>
                 </div>
                 <div>
@@ -130,7 +120,6 @@
             let subButton = document.getElementById("submit")
             subButton.disabled = true;
             tArea.oninput = () => {
-                console.log("merge")
                 if (tArea.value === "") {
                     subButton.disabled = true;
                 }
