@@ -1,0 +1,59 @@
+﻿@model EBookShop.ViewModels.GetBookViewModel
+@{
+    ViewData["Title"] = "Get book";
+}
+
+<div class="align-items-center"> 
+    <div class="col-md-7">
+        <h3>Card Info</h3>
+        <hr />
+        <br />
+        <form action="/" method="post">
+            <div class="form-group">
+                <label for="card-number">Cardholder Name</label>
+                <input asp-for="@Model.paymentInfo.CardHolderName" type="text" name="cardholder-name"
+                       placeholder="Enter Cardholder Name" required class="form-control">
+            </div>
+            <br />
+            <div class="form-group">
+                <label for="card-number">Credit Card Number</label>
+                <input asp-for="@Model.paymentInfo.CardNumber" name="card-number" type="tel" inputmode="numeric"
+                       pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="24"
+                       placeholder="xxxx xxxx xxxx xxxx xxxx" required class="form-control">
+            </div>
+            <br />
+            <div class="row">
+                <div class="form-group col-md-7">
+                    <label for="expiry-date">Expiration Month/Year</label>
+                    <div class="input-group" id="expiry-date">
+                        <select asp-for="@Model.paymentInfo.ExpiryMonth" class="form-control col-md-6">
+                            @for (int i = 1; i <= 12; i++)
+                            {
+                                <option>@i</option>
+                            }
+                        </select>
+                        <select asp-for="@Model.paymentInfo.ExpiryYear" class="form-control col-md-6">
+                            @for (int i = DateTime.Now.Year; i < DateTime.Now.Year + 10; i++)
+                            {
+                                <option>@i</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="card-cvv">CVV</label>
+                    <input asp-for="@Model.paymentInfo.CVV" type="number" name="card-cvv"
+                           placeholder="Enter CVV" required class="form-control">
+                </div>
+            </div>
+            <br />
+            <span>
+                <a href="#" class="btn btn-secondary" role="button">Pay $@Model.book.Price</a>
+                <a href="#" class="btn btn-secondary" role="button">Cancel</a>
+            </span>
+        </form>
+    </div>
+    <div class="col-md-5">
+
+    </div>
+</div>
