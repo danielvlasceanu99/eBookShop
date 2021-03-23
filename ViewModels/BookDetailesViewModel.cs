@@ -10,5 +10,6 @@ namespace EBookShop.ViewModels
     {
         public Book Book { get; set; }
         public Review Review { get; set; }
+        public bool HasBook { get; set; }
     }
 }

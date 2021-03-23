@@ -52,9 +52,8 @@
                     </h5>
                     <form asp-controller="BookDetails" asp-action="Details" method="post">
                         <input type="hidden" asp-for=@Model.Review.BookID value="@Model.Book.Id" />
-                        <input type="hidden" asp-for=@Model.Review.UserID value="@UserManager.GetUserId(User)" />
                         <input type="hidden" asp-for=@Model.Book value="@Model.Book" />
-                        <textarea asp-for="@Model.Review.Text" id="text" rows="4" cols="89" style="resize:none" placeholder="Write a review about @Model.Book.Title..."></textarea>
+                        <textarea asp-for="@Model.Review.Text" id="text" rows="4" cols="90" style="resize:none" placeholder="Write a review about @Model.Book.Title..."></textarea>
                         <div class="d-flex justify-content-end">
                             <input id="submit" type="submit" value="Post review" class="btn btn-secondary"/>
                         </div>
@@ -81,11 +80,25 @@
     </div>
     <div class="col-md-3">
         <div>
-            <form sp-controller="TODO" asp-action="TODO" method="post">
-                <button class="btn btn-secondary btn-lg btn-block">
+            @if (Model.HasBook)
+            {
+                <div class="dropdown">
+                    <button type="button" class="btn btn-secondary dropdown-toggle btn-lg btn-block" data-toggle="dropdown">
+                        Download
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="pdf">PDF</a>
+                        <a class="dropdown-item" href="ebub">EPUB</a>
+                        <a class="dropdown-item" href="mobi">MOBI</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <a asp-controller="Getbook" asp-action="GetBook" asp-route-id="@Model.Book.Id" class="btn btn-secondary btn-lg btn-block">
                     Get the book
-                </button>
-            </form>
+                </a>
+            }
             <hr />
         </div>
         <h5>Genres</h5>
@@ -112,7 +125,7 @@
     </div>
 </div>
 
-@section Script{
+@section BookDetailsScript{
     <script>
     document.addEventListener("DOMContentLoaded", () => {
         if ("@UserManager.GetUserId(User)" !== "") {
