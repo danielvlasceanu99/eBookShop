@@ -77,5 +77,16 @@ namespace EBookShop.Controllers
             }
             return RedirectToAction("Details", "BookDetails", new { id = model.Review.BookID });
         }
+
+        public ActionResult DownloadDocument()
+        {
+            string filePath = "C:/Users/danie/OneDrive/Documents/My Files/preview.pdf";
+            string fileName = "preview.pdf";
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+            return File(fileBytes, "application/force-download", fileName);
+
+        }
     }
 }
