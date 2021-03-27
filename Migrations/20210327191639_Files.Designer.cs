@@ -4,14 +4,16 @@ using EBookShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EBookShop.Migrations
 {
     [DbContext(typeof(EBookShopAuthContext))]
-    partial class EBookShopAuthContextModelSnapshot : ModelSnapshot
+    [Migration("20210327191639_Files")]
+    partial class Files
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,9 +111,6 @@ namespace EBookShop.Migrations
                     b.Property<DateTime>("DateOfDeath")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImageId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -142,13 +141,7 @@ namespace EBookShop.Migrations
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("OriginalLanguage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreviewId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Price")

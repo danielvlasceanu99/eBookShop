@@ -53,6 +53,10 @@ namespace EBookShop.Data
             modelBuilder.Entity<Review>().HasOne<User>(association => association.User)
                 .WithMany(user => user.ReviewList)
                 .HasForeignKey(association => association.UserID);
+
+            modelBuilder.Entity<File>().HasOne<Book>(book => book.Book)
+                .WithMany(file => file.FileList)
+                .HasForeignKey(file => file.BookID);
         }
 
         public DbSet<Author> Author { get; set; }

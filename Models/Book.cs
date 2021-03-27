@@ -12,6 +12,8 @@ namespace  EBookShop.Models
         public float Rating { get; set; }
         public string OriginalLanguage { get; set; }
         public float Price { get; set; }
+        public string ImageId { get; set; }
+        public string PreviewId { get; set; }
 
         // Relatioships
         // Genre relationship - many to many
@@ -21,7 +23,10 @@ namespace  EBookShop.Models
         public virtual ICollection<BookToUserAssociation> UserList { get; set; } 
 
         // Review relationship - one to many
-        public virtual ICollection<Review> ReviewList { get; set; } 
+        public virtual ICollection<Review> ReviewList { get; set; }
+
+        // File relationship - one to many
+        public virtual ICollection<File> FileList { get; set; }
 
         // Author relationship - one to many
         public int AuthorID { get; set; }

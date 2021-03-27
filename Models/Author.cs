@@ -15,7 +15,8 @@ namespace  EBookShop.Models
         public DateTime DateOfDeath { get; set; }
         public string PlaceAOfBirth { get; set; }
         public string ShortDesctiption { get; set; }
-        
+        public string ImageId { get; set; }
+
         // Relatioships
         // Book relationship - one to many
         public virtual ICollection<Book> BookList { get; set; } 

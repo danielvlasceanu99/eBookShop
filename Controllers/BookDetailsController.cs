@@ -64,6 +64,7 @@ namespace EBookShop.Controllers
 
             return View(BookDetailsVM);
         }
+
         [Authorize, HttpPost]
         public async Task<IActionResult> Details(BookDetailesViewModel model)
         {
@@ -86,7 +87,6 @@ namespace EBookShop.Controllers
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
 
             return File(fileBytes, "application/force-download", fileName);
-
         }
     }
 }
