@@ -10,5 +10,6 @@ namespace EBookShop.ViewModels
     {
         public PaymentInfo paymentInfo { get; set; }
         public Book book { get; set; }
+        public bool hasBook { get; set; }
     }
 }

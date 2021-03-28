@@ -44,9 +44,19 @@ namespace EBookShop.Controllers
                 return NotFound();
             }
 
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var bookToUser = await _context.BookToUser.FirstOrDefaultAsync(x => x.BookID == (int)id && x.UserID == userId);
+            
+            bool hasBook = true;
+            if (bookToUser == null)
+            {
+                hasBook = false;
+            }
+
             var getBookVM = new GetBookViewModel()
             {
-                book = book
+                book = book,
+                hasBook = hasBook
             };
             return View(getBookVM);
         }

@@ -79,11 +79,13 @@ namespace EBookShop.Controllers
             return RedirectToAction("Details", "BookDetails", new { id = model.Review.BookID });
         }
 
-        public ActionResult DownloadDocument()
+        public ActionResult DownloadDocument(int id, string type)
         {
-            string filePath = "C:/Users/danie/OneDrive/Documents/My Files/preview.pdf";
-            string fileName = "preview.pdf";
-
+            var file = _context.File.FirstOrDefaultAsync(m => m.BookID == id && string.Equals(m.Type, type.ToUpper()) == true);
+            
+            string fileName = file.Result.FileName + "." + type;
+            string filePath = "C:/Users/danie/OneDrive/Books/" + type + "/" + fileName;
+            
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
 
             return File(fileBytes, "application/force-download", fileName);

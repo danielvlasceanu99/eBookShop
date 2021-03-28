@@ -1,6 +1,6 @@
 ﻿@model EBookShop.ViewModels.BookListViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
 <div class="text-md-left">
@@ -21,8 +21,8 @@
     @for (int i = 0; i < Model.Books.Count; i++)
     {
         <div class="media p-3">
-            @{string src = "https://drive.google.com/uc?export=view&id=" + "1rC4i3rSX3bYggJq4nDPJfdWCvWdBdixG"; }
-            <img src=@src class="align-self-center mr-3 mt-3" width="130" height="160" alt=@Model.Books[i].Title>
+            @{string src = "https://drive.google.com/uc?export=view&id=" + @Model.Books[i].ImageId; }
+            <img src=@src class="align-self-center mr-3" width="115" height="160" alt=@Model.Books[i].Title>
             <div class="media-body">
                 <h4 class="d-flex justify-content-md-between align-items-md-start">
                     <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.Books[i].Id" class="text-decoration-none text-dark">

@@ -1,67 +1,95 @@
 ﻿@model EBookShop.ViewModels.GetBookViewModel
 @{
-    ViewData["Title"] = "Get book";
+    ViewData["Title"] = "Get" + Model.book.Title;
 }
 
 <div class="align-items-center"> 
-    <div class="col-md-7">
-        <h3>Card Info</h3>
-        <hr />
-        <br />
-        <form asp-controller="GetBook" asp-action="GetBook" asp-route-id="@Model.book.Id" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="@Model.paymentInfo.CardHolderName">Cardholder Name</label>
-                <input asp-for="@Model.paymentInfo.CardHolderName" type="text"
-                       placeholder="Enter Cardholder Name" required class="form-control">
-                <span asp-validation-for="@Model.paymentInfo.CardHolderName" class="text-danger"></span>
-            </div>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Card Info</h3>
+            <hr />
             <br />
-            <div class="form-group">
-                <label asp-for="@Model.paymentInfo.CardNumber">Credit Card Number</label>
-                <input asp-for="@Model.paymentInfo.CardNumber" type="tel" inputmode="numeric"
-                       pattern="[0-9\s]{13,24}" autocomplete="cc-number" maxlength="24"
-                       placeholder="xxxx xxxx xxxx xxxx xxxx" required class="form-control">
-                <span asp-validation-for="@Model.paymentInfo.CardNumber" class="text-danger"></span>
-            </div>
-            <br />
-            <div class="row">
-                <div class="form-group col-md-7">
-                    <label for="expiry-date">Expiration Month/Year</label>
-                    <div class="input-group" id="expiry-date">
-                        <select asp-for="@Model.paymentInfo.ExpiryMonth" class="form-control col-md-6">
-                            @for (int i = 1; i <= 12; i++)
-                            {
-                                <option>@i</option>
-                            }
-                        </select>
-                        <span asp-validation-for="@Model.paymentInfo.ExpiryMonth" class="text-danger"></span>
-                        <select asp-for="@Model.paymentInfo.ExpiryYear" class="form-control col-md-6">
-                            @for (int i = DateTime.Now.Year; i < DateTime.Now.Year + 10; i++)
-                            {
-                                <option>@i</option>
-                            }
-                        </select>
-                        <span asp-validation-for="@Model.paymentInfo.ExpiryYear" class="text-danger"></span>
+            <form asp-controller="GetBook" asp-action="GetBook" asp-route-id="@Model.book.Id" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="@Model.paymentInfo.CardHolderName">Cardholder Name</label>
+                    <input asp-for="@Model.paymentInfo.CardHolderName" type="text"
+                           placeholder="Enter Cardholder Name" required class="form-control">
+                    <span asp-validation-for="@Model.paymentInfo.CardHolderName" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label asp-for="@Model.paymentInfo.CardNumber">Credit Card Number</label>
+                    <input asp-for="@Model.paymentInfo.CardNumber" type="tel" inputmode="numeric"
+                           pattern="[0-9\s]{13,24}" autocomplete="cc-number" maxlength="24"
+                           placeholder="xxxx xxxx xxxx xxxx xxxx" required class="form-control">
+                    <span asp-validation-for="@Model.paymentInfo.CardNumber" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="form-group col-md-7">
+                        <label for="expiry-date">Expiration Month/Year</label>
+                        <div class="input-group" id="expiry-date">
+                            <select asp-for="@Model.paymentInfo.ExpiryMonth" class="form-control col-md-6">
+                                @for (int i = 1; i <= 12; i++)
+                                {
+                                    <option>@i</option>
+                                }
+                            </select>
+                            <span asp-validation-for="@Model.paymentInfo.ExpiryMonth" class="text-danger"></span>
+                            <select asp-for="@Model.paymentInfo.ExpiryYear" class="form-control col-md-6">
+                                @for (int i = DateTime.Now.Year; i < DateTime.Now.Year + 10; i++)
+                                {
+                                    <option>@i</option>
+                                }
+                            </select>
+                            <span asp-validation-for="@Model.paymentInfo.ExpiryYear" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label asp-for="@Model.paymentInfo.CVV">CVV</label>
+                        <input asp-for="@Model.paymentInfo.CVV" type="number"
+                               placeholder="Enter CVV" required class="form-control">
+                        <span asp-validation-for="@Model.paymentInfo.CVV" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group col-md-5">
-                    <label asp-for="@Model.paymentInfo.CVV">CVV</label>
-                    <input asp-for="@Model.paymentInfo.CVV" type="number"
-                           placeholder="Enter CVV" required class="form-control">
-                    <span asp-validation-for="@Model.paymentInfo.CVV" class="text-danger"></span>
+                <br />
+                <div class="row col-md-12">
+                    @if (Model.hasBook)
+                    {
+                        <p class="text-danger mr-3">You already own the book.</p>
+                    }
+                    else
+                    {
+                        <input type="submit" class="btn btn-secondary mr-3" value="Pay $@Model.book.Price" />
+                    }
+                    <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.book.Id" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-5">
+            <h3 class="text-right">Right now you are buying</h3>
+            <hr />
+            <div class="text-justify media">
+                @{string srcBook = "https://drive.google.com/uc?export=view&id=" + @Model.book.ImageId; }
+                <img src=@srcBook class="align-self-center mr-3" style="width:115px; height:160px">
+                <div>
+                    <h5>@Model.book.Title</h5>
+                    <h5><small>by @Model.book.Author.Name</small></h5>
+                    <em class="small">@Model.book.Description</em>
                 </div>
             </div>
             <br />
-            <span>
-                <input type="submit" class="btn btn-secondary" value="Pay $@Model.book.Price" />
-                <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.book.Id" class="btn btn-secondary">
-                    Cancel
-                </a>
-            </span>
-        </form>
-    </div>
-    <div class="col-md-5">
-
+            <br />
+            <h3 class="text-right">The purchase contains</h3>
+            <hr />
+            <div class="text-right">
+                <p>@(Model.book.Title + ".pdf")</p>
+                <p>@(Model.book.Title + ".mobi")</p>
+                <p>@(Model.book.Title + ".epub")</p>
+            </div>
+        </div>
     </div>
 </div>

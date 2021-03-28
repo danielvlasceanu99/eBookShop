@@ -1,6 +1,6 @@
 ﻿@model EBookShop.ViewModels.BookDetailesViewModel
 @{
-    ViewData["Title"] = "Whatever";
+    ViewData["Title"] = Model.Book.Title;
 }
 
 @using Microsoft.AspNetCore.Identity
@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-9">
         <div class="media">
-            @{string srcBook = "https://drive.google.com/uc?export=view&id=" + "1rC4i3rSX3bYggJq4nDPJfdWCvWdBdixG"; }
+            @{string srcBook = "https://drive.google.com/uc?export=view&id=" + Model.Book.ImageId; }
             <img src=@srcBook class="align-self-start mr-3 mt-3" width="156" height="212" alt=@Model.Book.Title>
             <div class="media-body text-justify">
                 <h4 class="d-flex justify-content-md-between align-items-md-start">
@@ -37,8 +37,8 @@
                     <div>
                         <hr />
                         <h5 class="font-weight-bold">Preview</h5>
-                        <embed frameborder="1" scrolling="no" width="480" height="610"
-                               src="https://drive.google.com/file/d/1gW1twdVQPD4ZSakNr4-Me4Z4sB14ZCBx/preview" />
+                        @{string srcPreview = "https://drive.google.com/file/d/" + Model.Book.PreviewId + "/preview"; }
+                        <embed frameborder="1" scrolling="no" width="520" height="650" src=@srcPreview />
                     </div>
                 </div>
                 <div>
@@ -75,7 +75,6 @@
                     }
                 </div>
             </div>
-
         </div>
     </div>
     <div class="col-md-3">
@@ -87,9 +86,12 @@
                         Download
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument">PDF</a>
-                        <a class="dropdown-item" href="ebub">EPUB</a>
-                        <a class="dropdown-item" href="mobi">MOBI</a>
+                        <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument" 
+                           asp-route-id=@Model.Book.Id asp-route-type="pdf">PDF</a>
+                        <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument" 
+                           asp-route-id=@Model.Book.Id asp-route-type="epub">EPUB</a>
+                        <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument" 
+                           asp-route-id=@Model.Book.Id asp-route-type="mobi">MOBI</a>
                     </div>
                 </div>
             }
@@ -111,8 +113,8 @@
         <p class="text-uppercase">About @Model.Book.Author.Name</p>
 
         <div class="ebs-author-card text-justify">
-            @{string srcAuthor = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
-            <img src=@srcAuthor class="mx-auto d-block" style="width:150px; height:150px">
+            @{string srcAuthor = "https://drive.google.com/uc?export=view&id=" + @Model.Book.Author.ImageId; }
+            <img src=@srcAuthor class="mx-auto d-block" style="width:125px; height:150px">
             <div>
                 <h5>
                     <a asp-controller="AuthorDetails" asp-action="Details" asp-route-id="@Model.Book.Author.Id" class="text-decoration-none text-dark">

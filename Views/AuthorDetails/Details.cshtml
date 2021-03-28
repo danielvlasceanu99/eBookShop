@@ -1,14 +1,14 @@
 ﻿@model EBookShop.Models.Author
 @{
-    ViewData["Title"] = "Author details Page";
+    ViewData["Title"] = Model.Name;
 }
 
 @using System.Globalization;
 
 <div class="row">
     <div class="col-lg-3">
-        @{string srcAuthor = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
-        <img src=@srcAuthor class="mx-auto d-block" style="width:200px; height:200px">
+        @{string srcAuthor = "https://drive.google.com/uc?export=view&id=" + Model.ImageId; }
+        <img src=@srcAuthor class="mx-auto d-block mt-2" style="width:175px; height:200px">
     </div>
     <div class="col-lg-9">
         <h4>About @Model.Name</h4>
@@ -47,8 +47,8 @@
                 <hr />
                 <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@book.Id" class="text-decoration-none text-dark">
                     <div class="media p-3">
-                        @{string srcBook = "https://drive.google.com/uc?export=view&id=" + "1rC4i3rSX3bYggJq4nDPJfdWCvWdBdixG"; }
-                        <img src=@srcBook class="align-self-start  mr-3" style="width:50px; height:75px" alt=@book.Title>
+                        @{string srcBook = "https://drive.google.com/uc?export=view&id=" + book.ImageId; }
+                        <img src=@srcBook class="align-self-start mr-3" style="width:50px; height:75px" alt=@book.Title>
                         <div class="media-body">
                             <h4>@book.Title</h4>
                             <p class="font-weight-bold">Goodreads rating: @book.Rating/5</p>

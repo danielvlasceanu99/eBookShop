@@ -65,6 +65,7 @@ namespace EBookShop.Data
         public DbSet<Genre> Genre { get; set; }
         public DbSet<GenreToBookAssociation> GenreToBook { get; set; }
         public DbSet<Review> Review { get; set; }
+        public DbSet<File> File { get; set; }
         public DbSet<User> User { get; set; }
     }
 }
