@@ -1,0 +1,46 @@
+﻿@model EBookShop.Areas.Identity.Data.User
+@{
+    ViewData["Title"] = "Profile";
+}
+<div>
+    <h3>Hello @Model.FirstName @Model.LastName!</h3>
+    <br />
+    <h4>Your books</h4>
+    <div class="col-md-12">
+        @foreach (BookToUserAssociation book in Model.BookList)
+        {
+            <hr />
+            <div class="row d-flex">
+                <div class="media p-3 col-md-10">
+                    @{string srcBook = "https://drive.google.com/uc?export=view&id=" + book.Book.ImageId; }
+                    <img src=@srcBook class="align-self-start mr-3" style="width:75px; height:100px" alt=@book.Book.Title>
+                    <div class="media-body">
+                        <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@book.Book.Id" class="text-decoration-none text-dark">
+                            <h4>@book.Book.Title</h4>
+                        </a>
+                        <p class="font-weight-bold">Goodreads rating: @book.Book.Rating/5</p>
+                        @foreach (GenreToBookAssociation g in book.Book.GenreList)
+                        {
+                            <span class="badge badge-secondary">@g.Genre.GenreName</span>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-2 align-self-center">
+                    <div class="dropdown dropleft">
+                        <button type="button" class="btn btn-secondary dropdown-toggle btn-lg btn-block" data-toggle="dropdown">
+                            Download
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument"
+                               asp-route-id=@book.Book.Id asp-route-type="pdf">PDF</a>
+                            <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument"
+                               asp-route-id=@book.Book.Id asp-route-type="epub">EPUB</a>
+                            <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument"
+                               asp-route-id=@book.Book.Id asp-route-type="mobi">MOBI</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

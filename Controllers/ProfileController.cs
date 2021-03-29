@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using EBookShop.Areas.Identity.Data;
+using EBookShop.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace EBookShop.Controllers
+{
+    [Authorize]
+    public class ProfileController : Controller
+    {
+        private readonly EBookShopAuthContext _context;
+        private readonly UserManager<User> _userManager;
+
+        public ProfileController(EBookShopAuthContext context, UserManager<User> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            user.BookList = await _context.BookToUser
+                .Include(x => x.Book).ThenInclude(g => g.GenreList)
+                .ThenInclude(x=>x.Genre).ToListAsync();
+            return View(user);
+        }
+    }
+}

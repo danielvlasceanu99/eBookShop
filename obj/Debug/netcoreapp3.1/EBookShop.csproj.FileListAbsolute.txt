@@ -171,3 +171,4 @@ C:\Users\danie\Desktop\EBookShop\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Log
 C:\Users\danie\Desktop\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\BookDetails\Details.cshtml.g.cs
 C:\Users\danie\Desktop\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\AuthorDetails\Details.cshtml.g.cs
 C:\Users\danie\Desktop\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\GetBook\GetBook.cshtml.g.cs
+C:\Users\danie\Desktop\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Index.cshtml.g.cs

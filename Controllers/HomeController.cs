@@ -28,7 +28,7 @@ namespace EBookShop.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string bookGenre, string searchString)
         {
-            IQueryable<string> genreQuery = from genres in _context.Genre select genres.GenreName;
+            var genreQuery = await _context.Genre.ToListAsync();
             var books = await _context.Book.Include(x => x.Author)
                 .Include(x => x.GenreList).ThenInclude(x => x.Genre).ToListAsync();
 
@@ -44,7 +44,7 @@ namespace EBookShop.Controllers
 
             var bookListVM = new BookListViewModel
             {
-                Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Genres = genreQuery,
                 Books = books
             };
 
