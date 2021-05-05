@@ -30,6 +30,8 @@ namespace EBookShop.Areas.Identity.Data
         // Relatioships
         // Book relationship - many to many
         public virtual ICollection<BookToUserAssociation> BookList { get; set; }
+        public virtual ICollection<Wishlist> WishlistList { get; set; }
+        public virtual ICollection<Cart> CartList { get; set; }
 
         // Review relationship - one to many
         public virtual ICollection<Review> ReviewList { get; set; }

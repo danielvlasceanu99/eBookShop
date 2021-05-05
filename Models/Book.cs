@@ -17,10 +17,12 @@ namespace  EBookShop.Models
 
         // Relatioships
         // Genre relationship - many to many
-        public virtual ICollection<GenreToBookAssociation> GenreList { get; set; } 
+        public virtual ICollection<GenreToBookAssociation> GenreList { get; set; }
 
         // Book relationship - many to many
-        public virtual ICollection<BookToUserAssociation> UserList { get; set; } 
+        public virtual ICollection<BookToUserAssociation> UserList { get; set; }
+        public virtual ICollection<Wishlist> WishlistList { get; set; }
+        public virtual ICollection<Cart> CartList { get; set; }
 
         // Review relationship - one to many
         public virtual ICollection<Review> ReviewList { get; set; }
@@ -31,6 +33,9 @@ namespace  EBookShop.Models
         // Author relationship - one to many
         public int AuthorID { get; set; }
         public Author Author { get; set; }
+
+        public int DiscountID { get; set; }
+        public Discount Discount {get; set;}
 
         public bool CheckGenre(string bookgenre)
         {

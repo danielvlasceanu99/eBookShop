@@ -25,10 +25,16 @@ namespace EBookShop.Data
 
             modelBuilder.Entity<GenreToBookAssociation>().HasKey(key => new { key.BookID, key.GenreID });
             modelBuilder.Entity<BookToUserAssociation>().HasKey(key => new { key.BookID, key.UserID });
+            modelBuilder.Entity<Cart>().HasKey(key => new { key.BookID, key.UserID });
+            modelBuilder.Entity<Wishlist>().HasKey(key => new { key.BookID, key.UserID });
 
             modelBuilder.Entity<Book>().HasOne<Author>(book => book.Author)
                 .WithMany(author => author.BookList)
                 .HasForeignKey(book => book.AuthorID);
+
+            modelBuilder.Entity<Book>().HasOne<Discount>(book => book.Discount)
+                .WithMany(discount => discount.BookList)
+                .HasForeignKey(book => book.DiscountID);
 
             modelBuilder.Entity<GenreToBookAssociation>().HasOne<Book>(association => association.Book)
                 .WithMany(book => book.GenreList)
@@ -57,6 +63,22 @@ namespace EBookShop.Data
             modelBuilder.Entity<File>().HasOne<Book>(book => book.Book)
                 .WithMany(file => file.FileList)
                 .HasForeignKey(file => file.BookID);
+
+            modelBuilder.Entity<Wishlist>().HasOne<Book>(association => association.Book)
+               .WithMany(book => book.WishlistList)
+               .HasForeignKey(association => association.BookID);
+
+            modelBuilder.Entity<Wishlist>().HasOne<User>(association => association.User)
+                .WithMany(user => user.WishlistList)
+                .HasForeignKey(association => association.UserID);
+
+            modelBuilder.Entity<Cart>().HasOne<Book>(association => association.Book)
+               .WithMany(book => book.CartList)
+               .HasForeignKey(association => association.BookID);
+
+            modelBuilder.Entity<Cart>().HasOne<User>(association => association.User)
+                .WithMany(user => user.CartList)
+                .HasForeignKey(association => association.UserID);
         }
 
         public DbSet<Author> Author { get; set; }
@@ -67,5 +89,8 @@ namespace EBookShop.Data
         public DbSet<Review> Review { get; set; }
         public DbSet<File> File { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Wishlist> Wishlist { get; set; }
+        public DbSet<Cart> Cart { get; set; }
+        public DbSet<Discount> Discount { get; set; }
     }
 }
