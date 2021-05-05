@@ -32,9 +32,9 @@ namespace EBookShop.Data
                 .WithMany(author => author.BookList)
                 .HasForeignKey(book => book.AuthorID);
 
-            modelBuilder.Entity<Book>().HasOne<Discount>(book => book.Discount)
-                .WithMany(discount => discount.BookList)
-                .HasForeignKey(book => book.DiscountID);
+            modelBuilder.Entity<Discount>().HasOne(discount => discount.Book)
+                .WithOne()
+                .HasForeignKey<Discount>(discount => discount.BookId);
 
             modelBuilder.Entity<GenreToBookAssociation>().HasOne<Book>(association => association.Book)
                 .WithMany(book => book.GenreList)

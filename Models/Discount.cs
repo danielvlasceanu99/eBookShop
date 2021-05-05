@@ -11,7 +11,7 @@ namespace EBookShop.Models
         public string Description { get; set; }
         public float Percentage { get; set; }
         public int IsValid { get; set; }
-
-        public virtual ICollection<Book> BookList { get; set; }
+        public int BookId { get; set; }
+        public Book Book { get; set; }
     }
 }
