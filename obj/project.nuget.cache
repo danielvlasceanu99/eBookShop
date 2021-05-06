@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Aal6AeaFQE8UNi25qQxNoIykZqiKo5kt23CBE1zPvb+5TqeaO+AhzDiHaanOyXqnwtU/5lVBsdXAdsOClF6VFQ==",
+  "dgSpecHash": "7c3iBc55mImId0hhAtvpcvA7N7Dpunnenu70/MtjKiid4OOZpFDftUrn8RB5YWaf3sczSDPU0EpDGxHbIvrpjQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\danie\\Desktop\\New folder\\eBookShop\\EBookShop.csproj",
+  "projectFilePath": "D:\\AN_3_SEM_2\\Licenta\\eBookShop\\EBookShop.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\danie\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.10\\microsoft.aspnetcore.cryptography.internal.3.1.10.nupkg.sha512",
     "C:\\Users\\danie\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\3.1.10\\microsoft.aspnetcore.cryptography.keyderivation.3.1.10.nupkg.sha512",

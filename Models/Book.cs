@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace  EBookShop.Models
 {
@@ -14,6 +15,8 @@ namespace  EBookShop.Models
         public float Price { get; set; }
         public string ImageId { get; set; }
         public string PreviewId { get; set; }
+        [Range(0, 1)]
+        public decimal Discount { get; set; }
 
         // Relatioships
         // Genre relationship - many to many
@@ -33,9 +36,6 @@ namespace  EBookShop.Models
         // Author relationship - one to many
         public int AuthorID { get; set; }
         public Author Author { get; set; }
-
-        public int DiscountID { get; set; }
-        public Discount Discount {get; set;}
 
         public bool CheckGenre(string bookgenre)
         {

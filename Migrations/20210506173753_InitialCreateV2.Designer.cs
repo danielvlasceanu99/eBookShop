@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EBookShop.Migrations
 {
     [DbContext(typeof(EBookShopAuthContext))]
-    [Migration("20210327191639_Files")]
-    partial class Files
+    [Migration("20210506173753_InitialCreateV2")]
+    partial class InitialCreateV2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -111,6 +111,9 @@ namespace EBookShop.Migrations
                     b.Property<DateTime>("DateOfDeath")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -138,10 +141,19 @@ namespace EBookShop.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("OriginalLanguage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreviewId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Price")
@@ -173,6 +185,21 @@ namespace EBookShop.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("BookToUser");
+                });
+
+            modelBuilder.Entity("EBookShop.Models.Cart", b =>
+                {
+                    b.Property<int>("BookID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("BookID", "UserID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("EBookShop.Models.File", b =>
@@ -254,6 +281,21 @@ namespace EBookShop.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Review");
+                });
+
+            modelBuilder.Entity("EBookShop.Models.Wishlist", b =>
+                {
+                    b.Property<int>("BookID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("BookID", "UserID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Wishlist");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -415,6 +457,21 @@ namespace EBookShop.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("EBookShop.Models.Cart", b =>
+                {
+                    b.HasOne("EBookShop.Models.Book", "Book")
+                        .WithMany("CartList")
+                        .HasForeignKey("BookID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EBookShop.Areas.Identity.Data.User", "User")
+                        .WithMany("CartList")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("EBookShop.Models.File", b =>
                 {
                     b.HasOne("EBookShop.Models.Book", "Book")
@@ -450,6 +507,21 @@ namespace EBookShop.Migrations
                     b.HasOne("EBookShop.Areas.Identity.Data.User", "User")
                         .WithMany("ReviewList")
                         .HasForeignKey("UserID");
+                });
+
+            modelBuilder.Entity("EBookShop.Models.Wishlist", b =>
+                {
+                    b.HasOne("EBookShop.Models.Book", "Book")
+                        .WithMany("WishlistList")
+                        .HasForeignKey("BookID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EBookShop.Areas.Identity.Data.User", "User")
+                        .WithMany("WishlistList")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

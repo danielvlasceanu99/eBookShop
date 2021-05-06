@@ -32,10 +32,6 @@ namespace EBookShop.Data
                 .WithMany(author => author.BookList)
                 .HasForeignKey(book => book.AuthorID);
 
-            modelBuilder.Entity<Discount>().HasOne(discount => discount.Book)
-                .WithOne()
-                .HasForeignKey<Discount>(discount => discount.BookId);
-
             modelBuilder.Entity<GenreToBookAssociation>().HasOne<Book>(association => association.Book)
                 .WithMany(book => book.GenreList)
                 .HasForeignKey(association => association.BookID);
@@ -91,6 +87,5 @@ namespace EBookShop.Data
         public DbSet<User> User { get; set; }
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<Cart> Cart { get; set; }
-        public DbSet<Discount> Discount { get; set; }
     }
 }

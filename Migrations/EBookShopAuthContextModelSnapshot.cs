@@ -139,11 +139,8 @@ namespace EBookShop.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DiscountID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DiscountId1")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(max)");
@@ -169,8 +166,6 @@ namespace EBookShop.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorID");
-
-                    b.HasIndex("DiscountId1");
 
                     b.ToTable("Book");
                 });
@@ -203,33 +198,6 @@ namespace EBookShop.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Cart");
-                });
-
-            modelBuilder.Entity("EBookShop.Models.Discount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IsValid")
-                        .HasColumnType("int");
-
-                    b.Property<float>("Percentage")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId")
-                        .IsUnique();
-
-                    b.ToTable("Discount");
                 });
 
             modelBuilder.Entity("EBookShop.Models.File", b =>
@@ -470,10 +438,6 @@ namespace EBookShop.Migrations
                         .HasForeignKey("AuthorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("EBookShop.Models.Discount", "Discount")
-                        .WithMany()
-                        .HasForeignKey("DiscountId1");
                 });
 
             modelBuilder.Entity("EBookShop.Models.BookToUserAssociation", b =>
@@ -502,15 +466,6 @@ namespace EBookShop.Migrations
                     b.HasOne("EBookShop.Areas.Identity.Data.User", "User")
                         .WithMany("CartList")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EBookShop.Models.Discount", b =>
-                {
-                    b.HasOne("EBookShop.Models.Book", "Book")
-                        .WithOne()
-                        .HasForeignKey("EBookShop.Models.Discount", "BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
