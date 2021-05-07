@@ -31,5 +31,23 @@ namespace EBookShop.Controllers
                 .ThenInclude(x=>x.Genre).ToListAsync();
             return View(user);
         }
+
+        public async Task<IActionResult> Wishlist()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            user.WishlistList = await _context.Wishlist
+                .Include(x => x.Book).ThenInclude(g => g.GenreList)
+                .ThenInclude(x => x.Genre).ToListAsync();
+            return View(user);
+        }
+
+        public async Task<IActionResult> Cart()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            user.CartList = await _context.Cart
+                .Include(x => x.Book).ThenInclude(g => g.GenreList)
+                .ThenInclude(x => x.Genre).ToListAsync();
+            return View(user);
+        }
     }
 }

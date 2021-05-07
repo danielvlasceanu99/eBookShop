@@ -47,7 +47,20 @@
                     <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.Books[i].Id" class="text-decoration-none text-dark">
                         @Model.Books[i].Title
                     </a>
-                    <span class="badge">$@Model.Books[i].Price</span>
+                    @if (@Model.Books[i].Discount != 0)
+                    {
+                        <span>
+                            <span class="badge">
+                                <del class="text-danger">$@Model.Books[i].Price</del>
+                                <sup class="text-danger">-@(String.Format("{0:#,##}", Model.Books[i].Discount *100))%</sup>
+                                $@(String.Format("{0:#,##.##}", (float)(1 - Model.Books[i].Discount) * Model.Books[i].Price))
+                            </span>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge">$@Model.Books[i].Price</span>
+                    }
                 </h4>
                 <small>ISBN: @Model.Books[i].ISBN</small>
                 <p>by <a asp-controller="AuthorDetails" asp-action="Details" asp-route-id="@Model.Books[i].Author.Id" class="text-decoration-none text-dark">

@@ -520,3 +520,5 @@ D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\staticwebassets\EBookSho
 D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\EBookShop.dll
 D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\EBookShop.pdb
 D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\EBookShop.genruntimeconfig.cache
+D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Cart.cshtml.g.cs
+D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Wishlist.cshtml.g.cs
