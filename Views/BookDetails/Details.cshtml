@@ -86,20 +86,30 @@
                         Download
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument" 
+                        <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument"
                            asp-route-id=@Model.Book.Id asp-route-type="pdf">PDF</a>
-                        <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument" 
+                        <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument"
                            asp-route-id=@Model.Book.Id asp-route-type="epub">EPUB</a>
-                        <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument" 
+                        <a class="dropdown-item" asp-controller="BookDetails" asp-action="DownloadDocument"
                            asp-route-id=@Model.Book.Id asp-route-type="mobi">MOBI</a>
                     </div>
                 </div>
             }
             else
             {
-                <a asp-controller="Getbook" asp-action="GetBook" asp-route-id="@Model.Book.Id" class="btn btn-secondary btn-lg btn-block">
+                <div class="input-group mb-3">
+                    <a asp-controller="Getbook" asp-action="AddBookToWishlist" asp-route-id="@Model.Book.Id" class="btn btn-secondary btn-lg btn-block">
+                        Add to Wishlist
+                    </a>
+                    <div class="input-group-append">
+                        <a asp-controller="Getbook" asp-action="AddBookToCart" asp-route-id="@Model.Book.Id" class="btn btn-secondary btn-lg btn-block">
+                            Add to cart
+                        </a>
+                    </div>
+                </div>
+                @*<a asp-controller="Getbook" asp-action="GetBook" asp-route-id="@Model.Book.Id" class="btn btn-secondary btn-lg btn-block">
                     Get the book
-                </a>
+                </a>*@
             }
             <hr />
         </div>

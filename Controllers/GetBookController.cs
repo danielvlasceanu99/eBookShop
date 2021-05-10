@@ -95,5 +95,47 @@ namespace EBookShop.Controllers
             };
             return View(getBookVM);
         }
+
+        [Authorize]
+        public async Task<IActionResult> AddBookToWishlist(int ? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var book = await _context.Book.Include(x => x.Author)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+            Wishlist wish = new Wishlist();
+            wish.BookID = (int)id;
+            wish.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _context.Add(wish);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "BookDetails", new { id = (int)id });
+        }
+        public async Task<IActionResult> AddBookToCart(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var book = await _context.Book.Include(x => x.Author)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+            Cart item = new Cart();
+            item.BookID = (int)id;
+            item.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _context.Add(item);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "BookDetails", new { id = (int)id });
+        }
     }
 }
