@@ -65,11 +65,17 @@ namespace EBookShop.Controllers
         [Authorize, HttpPost]
         public async Task<IActionResult> Details(BookDetailesViewModel model)
         {
-            model.Review.Rating = 3;
             model.Review.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (ModelState.IsValid)
             {
                 _context.Add(model.Review);
+
+                model.Book = await _context.Book.Include(book => book.ReviewList)
+                    .FirstOrDefaultAsync(book => book.Id == model.Review.BookID);
+
+                model.Book.Rating = model.Book.Rating * model.Book.ReviewList.Count() + model.Review.Rating;
+                _context.Update(model.Book);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "BookDetails", new { id = model.Review.BookID });
             }

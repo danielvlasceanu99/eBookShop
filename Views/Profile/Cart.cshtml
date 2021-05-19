@@ -14,8 +14,10 @@
                 {
                     total += (float)(1 - book.Book.Discount) * book.Book.Price;
                 }
-                <a class="align-self-center">Your total is $@total</a>
-                <a class="btn" asp-controller="#" asp-action="#" asp-route-id=#>
+                <a class="align-self-center">
+                    Your total is $@(String.Format("{0:#,##.##}", total))
+                </a>
+                <a class="btn" asp-controller="GetBook" asp-action="GetBook">
                     <i class="fas fa-sign-out-alt"></i>
                     Checkout
                 </a>
@@ -75,7 +77,7 @@
                     </div>
                 </div>
                 <div class="col-md-2 align-self-center">
-                    <a class="btn btn-secondary" asp-controller="#" asp-action="#"
+                    <a class="btn btn-secondary" asp-controller="GetBook" asp-action="RemoveFromCart"
                        asp-route-id=@book.Book.Id>Remove</a>
                 </div>
             </div>
@@ -83,16 +85,11 @@
         <div>
             @if (Model.CartList.Count == 0)
             {
-                <h5>Your cart is empty.</h5>
-            }
-            else
-            {
-                float total = 0;
-                foreach (Cart book in Model.CartList)
-                {
-                    total += (float)(1 - book.Book.Discount) * book.Book.Price;
-                }
-                <h5>Your total is $@total</h5>
+            <div class="d-flex justify-content-center">
+                <div>
+                    <h1 class="display-4 text-muted"> Your cart is empty</h1>
+                </div>
+            </div>
             }
         </div>
     </div>

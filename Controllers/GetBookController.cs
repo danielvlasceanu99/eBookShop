@@ -29,34 +29,22 @@ namespace EBookShop.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> GetBook(int? id)
+        [Authorize]
+        public async Task<IActionResult> GetBook()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var book = await _context.Book.Include(x => x.Author)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (book == null)
-            {
-                return NotFound();
-            }
-
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var bookToUser = await _context.BookToUser.FirstOrDefaultAsync(x => x.BookID == (int)id && x.UserID == userId);
-            
-            bool hasBook = true;
-            if (bookToUser == null)
+            var items = await _context.Cart.Include(x => x.Book)
+                .ThenInclude(x => x.Author)
+                .ToListAsync();
+            items = items.Where(m => m.UserID == userId).ToList();
+            if(items.Count == 0)
             {
-                hasBook = false;
+                return RedirectToAction("Cart", "Profile");
             }
 
             var getBookVM = new GetBookViewModel()
             {
-                book = book,
-                hasBook = hasBook
+                books = items
             };
             return View(getBookVM);
         }
@@ -64,34 +52,38 @@ namespace EBookShop.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GetBook(int? id,
+        public async Task<IActionResult> GetBook(
             [Bind("CardHolderName,CardNumber,ExpiryMonth,ExpiryYear,CVV")] PaymentInfo paymentInfo)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var book = await _context.Book.Include(x => x.Author)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (book == null)
-            {
-                return NotFound();
-            }
-
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var items = await _context.Cart.Include(x => x.Book).ToListAsync();
+            items = items.Where(m => m.UserID == userId).ToList();
             if (TryValidateModel(paymentInfo, nameof(PaymentInfo)))
             {
-                BookToUserAssociation bookToUser = new BookToUserAssociation();
-                bookToUser.BookID = (int)id;
-                bookToUser.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                _context.Add(bookToUser);
+                foreach (Cart item in items)
+                {
+                    BookToUserAssociation bookToUser = new BookToUserAssociation();
+                    bookToUser.BookID = item.BookID;
+                    bookToUser.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    _context.Add(bookToUser);
+
+                    _context.Remove(item);
+
+                    var wishlist = await _context.Wishlist.ToListAsync();
+                    wishlist = wishlist.Where(wish => wish.BookID == item.BookID
+                        && wish.UserID == item.UserID).ToList();
+                    if (wishlist.Count != 0)
+                    {
+                        _context.RemoveRange(wishlist);
+                    }
+                }
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "BookDetails", new { id = (int)id });
+                return RedirectToAction("Index", "Profile");
             }
+
             var getBookVM = new GetBookViewModel()
             {
-                book = book
+                books = items
             };
             return View(getBookVM);
         }
@@ -103,39 +95,169 @@ namespace EBookShop.Controllers
             {
                 return NotFound();
             }
-            var book = await _context.Book.Include(x => x.Author)
-                .FirstOrDefaultAsync(m => m.Id == id);
 
+            var book = await _context.Book.Include(x => x.Author).FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
                 return NotFound();
             }
+
             Wishlist wish = new Wishlist();
             wish.BookID = (int)id;
             wish.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            _context.Add(wish);
-            await _context.SaveChangesAsync();
+
+            var wishlistItem = await _context.Wishlist
+                .FirstOrDefaultAsync(m => m.BookID == wish.BookID && m.UserID == wish.UserID);
+            var ownedItem = await _context.BookToUser
+                .FirstOrDefaultAsync(m => m.BookID == wish.BookID && m.UserID == wish.UserID);
+            if (wishlistItem == null && ownedItem == null)
+            {
+                _context.Add(wish);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction("Details", "BookDetails", new { id = (int)id });
         }
+
+        [Authorize]
         public async Task<IActionResult> AddBookToCart(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+
             var book = await _context.Book.Include(x => x.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
-
             if (book == null)
             {
                 return NotFound();
             }
+
             Cart item = new Cart();
             item.BookID = (int)id;
             item.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            _context.Add(item);
-            await _context.SaveChangesAsync();
+
+            var cartItem = await _context.Cart
+                .FirstOrDefaultAsync(m => m.BookID == item.BookID && m.UserID == item.UserID);
+            var ownedItem = await _context.BookToUser
+                .FirstOrDefaultAsync(m => m.BookID == item.BookID && m.UserID == item.UserID);
+            if (cartItem == null && ownedItem == null)
+            {
+                _context.Add(item);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction("Details", "BookDetails", new { id = (int)id });
+        }
+
+        public async Task<IActionResult> MoveToCart(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var book = await _context.Book.Include(x => x.Author)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            Cart item = new Cart();
+            item.BookID = (int)id;
+            item.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var wishlistItem = await _context.Wishlist
+               .FirstOrDefaultAsync(m => m.BookID == item.BookID && m.UserID == item.UserID);
+
+            if (wishlistItem == null)
+            {
+                return NotFound();
+            }
+
+            var itemInCart = await _context.Cart
+                .FirstOrDefaultAsync(m => m.BookID == item.BookID && m.UserID == item.UserID);
+
+            if(itemInCart == null)
+            {
+                _context.Add(item);
+                _context.Wishlist.Remove(wishlistItem);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Wishlist", "Profile");
+        }
+
+        public async Task<IActionResult> RemoveFromWishlist(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var book = await _context.Book.Include(x => x.Author)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            var wishlistItem = await _context.Wishlist.FirstOrDefaultAsync(m => m.BookID == (int)id && 
+                    m.UserID == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if(wishlistItem != null)
+            {
+                _context.Wishlist.Remove(wishlistItem);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Wishlist", "Profile");
+        }
+
+        public async Task<IActionResult> RemoveFromCart(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var book = await _context.Book.Include(x => x.Author)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            var cartItem = await _context.Cart.FirstOrDefaultAsync(m => m.BookID == (int)id &&
+                    m.UserID == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (cartItem != null)
+            {
+                _context.Cart.Remove(cartItem);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Cart", "Profile");
+        }
+
+        public async Task<IActionResult> AddAllToCart()
+        {
+            var bookList = await _context.Wishlist.ToListAsync();
+            bookList = bookList.Where(book => book.UserID == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToList();
+
+            if(bookList.Count != 0)
+            {
+                foreach (Wishlist wish in bookList)
+                {
+                    Cart item = new Cart();
+                    item.BookID = wish.BookID;
+                    item.UserID = wish.UserID;
+
+                    var cartItem = await _context.Cart.FirstOrDefaultAsync(m => m.BookID == item.BookID
+                        && m.UserID == item.UserID);
+                    if (cartItem == null)
+                    {
+                        _context.Add(item);
+                    }
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Cart", "Profile");
         }
     }
 }

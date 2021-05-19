@@ -1,15 +1,15 @@
 ﻿@model EBookShop.ViewModels.GetBookViewModel
 @{
-    ViewData["Title"] = "Get" + Model.book.Title;
+    ViewData["Title"] = "Checkout";
 }
 
 <div class="align-items-center"> 
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-5">
             <h3>Card Info</h3>
             <hr />
             <br />
-            <form asp-controller="GetBook" asp-action="GetBook" asp-route-id="@Model.book.Id" method="post">
+            <form asp-controller="GetBook" asp-action="GetBook" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="@Model.paymentInfo.CardHolderName">Cardholder Name</label>
@@ -55,41 +55,51 @@
                 </div>
                 <br />
                 <div class="row col-md-12">
-                    @if (Model.hasBook)
+                    @{decimal total = 0; }
+                    @for (int i = 0; i < Model.books.Count(); i++)
                     {
-                        <p class="text-danger mr-3">You already own the book.</p>
+                        total += ((decimal)Model.books[i].Book.Price) -
+                            (((decimal)Model.books[i].Book.Price) * Model.books[i].Book.Discount);
                     }
-                    else
-                    {
-                        <input type="submit" class="btn btn-secondary mr-3" value="Pay $@Model.book.Price" />
-                    }
-                    <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.book.Id" class="btn btn-secondary">
+                    <input type="submit" class="btn btn-secondary mr-3"
+                           value="Pay $@(String.Format("{0:#,##.##}", total))" />
+                    <a asp-controller="Profile" asp-action="Cart" class="btn btn-secondary">
                         Cancel
                     </a>
                 </div>
             </form>
         </div>
+        <div class="col-md-2"></div>
         <div class="col-md-5">
-            <h3 class="text-right">Right now you are buying</h3>
-            <hr />
-            <div class="text-justify media">
-                @{string srcBook = "https://drive.google.com/uc?export=view&id=" + @Model.book.ImageId; }
-                <img src=@srcBook class="align-self-center mr-3" style="width:115px; height:160px">
-                <div>
-                    <h5>@Model.book.Title</h5>
-                    <h5><small>by @Model.book.Author.Name</small></h5>
-                    <em class="small">@Model.book.Description</em>
-                </div>
-            </div>
-            <br />
-            <br />
             <h3 class="text-right">The purchase contains</h3>
             <hr />
-            <div class="text-right">
-                <p>@(Model.book.Title + ".pdf")</p>
-                <p>@(Model.book.Title + ".mobi")</p>
-                <p>@(Model.book.Title + ".epub")</p>
-            </div>
+            @foreach (Cart item in Model.books)
+            {
+                <div class="text-justify media p-2">
+                    @{string srcBook = "https://drive.google.com/uc?export=view&id=" + item.Book.ImageId; }
+                    <img src=@srcBook class="align-self-center mr-3" style="width:67px; height:80px">
+                    <div class="media-body">
+                        <h5 class="d-flex justify-content-md-between align-items-md-start">
+                            @item.Book.Title
+                            @if (item.Book.Discount != 0)
+                            {
+                                <span>
+                                    <span class="badge">
+                                        <del class="text-danger">$@item.Book.Price</del>
+                                        <sup class="text-danger">-@(String.Format("{0:#,##}", item.Book.Discount * 100))%</sup>
+                                        $@(String.Format("{0:#,##.##}", (float)(1 - item.Book.Discount) * item.Book.Price))
+                                    </span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge">$@item.Book.Price</span>
+                            }
+                        </h5>
+                        <h5><small>by @item.Book.Author.Name</small></h5>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>

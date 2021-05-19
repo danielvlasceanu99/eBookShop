@@ -16,7 +16,18 @@
             <div class="media-body text-justify">
                 <h4 class="d-flex justify-content-md-between align-items-md-start">
                     @Model.Book.Title
-                    <span class="badge">$@Model.Book.Price</span>
+                    @if (Model.Book.Discount != 0)
+                    {
+                        <span class="badge">
+                            <del class="text-danger">$@Model.Book.Price</del>
+                            <sup class="text-danger">-@(String.Format("{0:#,##}", Model.Book.Discount *100))%</sup>
+                            $@(String.Format("{0:#,##.##}", (float)(1 - Model.Book.Discount) * Model.Book.Price))
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge">$@Model.Book.Price</span>
+                    }
                 </h4>
                 <p>by @Model.Book.Author.Name</p>
                 <h5 class="font-weight-bold">Description:</h5>
@@ -29,7 +40,7 @@
                     <a href="#info" class="text-decoration-none text-dark font-weight-bold" data-toggle="collapse">More info</a>
                     <div id="info" class="collapse">
                         <div class="font-weight-light">ISBN: @Model.Book.ISBN</div>
-                        <div class="font-weight-light">Goodreads rating: @Model.Book.Rating/5</div>
+                        <div class="font-weight-light">Rating: @Model.Book.Rating/5</div>
                         <div class="font-weight-light">Original language: @Model.Book.OriginalLanguage</div>
                     </div>
                 </div>
@@ -50,9 +61,17 @@
                             <small>Be the first to review this book</small>
                         }
                     </h5>
+                    <span class="font-weight-bolder">
+                        <h5 style="display:inline">Rating:</h5>
+                        <i class="fas fa-book-open" style="color:#808080"></i>
+                        <i class="fas fa-book-open" style="color:#808080"></i>
+                        <i class="fas fa-book-open" style="color:#808080"></i>
+                        <i class="fas fa-book-open" style="color:#808080"></i>
+                        <i class="fas fa-book-open" style="color:#808080"></i>
+                    </span>
                     <form asp-controller="BookDetails" asp-action="Details" method="post">
                         <input type="hidden" asp-for=@Model.Review.BookID value="@Model.Book.Id" />
-                        <input type="hidden" asp-for=@Model.Book value="@Model.Book" />
+                        <input type="hidden" asp-for=@Model.Review.Rating value="0" id="rating"/>
                         <textarea asp-for="@Model.Review.Text" id="text" rows="4" cols="90" style="resize:none" placeholder="Write a review about @Model.Book.Title..."></textarea>
                         <div class="d-flex justify-content-end">
                             <input id="submit" type="submit" value="Post review" class="btn btn-secondary"/>
@@ -68,7 +87,7 @@
                             @{string srcUser = "https://drive.google.com/uc?export=view&id=" + "1qT1rVtWGshdNr2ZhSQgSoaT-6xSYodHz"; }
                             <img src=@srcUser class="align-self-start mr-3" style="width:60px; height:60px">
                             <div class="media-body">
-                                <h5>@review.User.FirstName @review.User.LastName</h5>
+                                <h5>@review.User.FirstName @review.User.LastName <small>(@review.Rating/5)</small></h5>
                                 <p>@review.Text</p>
                             </div>
                         </div>
@@ -107,9 +126,6 @@
                         Add to cart
                     </a>
                 </div>
-                @*<a asp-controller="Getbook" asp-action="GetBook" asp-route-id="@Model.Book.Id" class="btn btn-secondary btn-lg btn-block">
-                    Get the book
-                </a>*@
             }
             <hr />
         </div>
@@ -163,6 +179,60 @@
             btnWishlist.disabled = true;
             btnWishlist.classList.add("disabled")
         }
+
+        let icons = document.querySelectorAll("i");
+        let rating = document.getElementById("rating");
+
+        icons[0].onmouseover  = () => {
+            icons[0].style = "color:#333333"
+        }
+        icons[1].onmouseover  = () => {
+            icons[0].style = "color:#333333"
+            icons[1].style = "color:#333333"
+        }
+        icons[2].onmouseover  = () => {
+            icons[0].style = "color:#333333"
+            icons[1].style = "color:#333333"
+            icons[2].style = "color:#333333"
+        }
+        icons[3].onmouseover  = () => {
+            icons[0].style = "color:#333333"
+            icons[1].style = "color:#333333"
+            icons[2].style = "color:#333333"
+            icons[3].style = "color:#333333"
+        }
+        icons[4].onmouseover  = () => {
+            icons[0].style = "color:#333333"
+            icons[1].style = "color:#333333"
+            icons[2].style = "color:#333333"
+            icons[3].style = "color:#333333"
+            icons[4].style = "color:#333333"
+        }
+
+        for (var i = 0; i < 5; i++) {
+            icons[i].onmouseleave = () => {
+                if (rating.value != 0) {
+                    for (let j = 0; j < rating.value; j++) {
+                        icons[j].style = "color:#222222"
+                    }
+                    for (let j = rating.value; j < 5; j++) {
+                        icons[j].style = "color:#808080"
+                    }
+                }
+                else {
+                    for (let j = 0; j < 5; j++) {
+                        icons[j].style = "color:#808080"
+                    }
+                }
+            }
+        }
+
+        icons[0].onclick = () => { rating.value = 1}
+        icons[1].onclick = () => { rating.value = 2}
+        icons[2].onclick = () => { rating.value = 3}
+        icons[3].onclick = () => { rating.value = 4}
+        icons[4].onclick = () => { rating.value = 5}
+
     })
     </script>
 }

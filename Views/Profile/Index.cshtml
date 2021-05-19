@@ -62,5 +62,15 @@
                 </div>
             </div>
         }
+        <div>
+            @if (Model.BookList.Count == 0)
+            {
+                <div class="d-flex justify-content-center">
+                    <div>
+                        <h1 class="display-4 text-muted"> Your library is empty</h1>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>
