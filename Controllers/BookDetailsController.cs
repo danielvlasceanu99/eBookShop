@@ -48,19 +48,16 @@ namespace EBookShop.Controllers
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var bookToUser = await _context.BookToUser.FirstOrDefaultAsync(x => x.BookID == (int)id && x.UserID == userId);
-
-            bool hasBook = true;
-
-            if(bookToUser == null)
-            {
-                hasBook = false;
-            }
+            var bookInWishlist = await _context.Wishlist.FirstOrDefaultAsync(x => x.BookID == (int)id && x.UserID == userId);
+            var bookInCart = await _context.Cart.FirstOrDefaultAsync(x => x.BookID == (int)id && x.UserID == userId);
 
             var BookDetailsVM = new BookDetailesViewModel
             {
                 Book = book,
-                HasBook = hasBook
-            };
+                HasBook = bookToUser == null ? false : true,
+                InWishlist = bookInWishlist == null ? false : true,
+                InCart = bookInCart == null ? false : true
+        };
 
             return View(BookDetailsVM);
         }

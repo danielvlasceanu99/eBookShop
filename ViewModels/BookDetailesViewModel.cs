@@ -11,5 +11,7 @@ namespace EBookShop.ViewModels
         public Book Book { get; set; }
         public Review Review { get; set; }
         public bool HasBook { get; set; }
+        public bool InWishlist { get; set; }
+        public bool InCart { get; set; }
     }
 }

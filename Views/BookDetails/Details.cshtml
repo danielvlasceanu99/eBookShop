@@ -97,15 +97,15 @@
             }
             else
             {
-                <div class="input-group mb-3">
-                    <a asp-controller="Getbook" asp-action="AddBookToWishlist" asp-route-id="@Model.Book.Id" class="btn btn-secondary btn-lg btn-block">
+                <div class="btn-group btn-block">
+                    <a asp-controller="Getbook" asp-action="AddBookToWishlist" asp-route-id="@Model.Book.Id" 
+                       class="btn btn-secondary" style="border-right:solid 1px #000000" id="adWishlist">
                         Add to Wishlist
                     </a>
-                    <div class="input-group-append">
-                        <a asp-controller="Getbook" asp-action="AddBookToCart" asp-route-id="@Model.Book.Id" class="btn btn-secondary btn-lg btn-block">
-                            Add to cart
-                        </a>
-                    </div>
+                    <a asp-controller="Getbook" asp-action="AddBookToCart" asp-route-id="@Model.Book.Id"
+                       class="btn btn-secondary" style="border-left:solid 1px #000000" id="adCart">
+                        Add to cart
+                    </a>
                 </div>
                 @*<a asp-controller="Getbook" asp-action="GetBook" asp-route-id="@Model.Book.Id" class="btn btn-secondary btn-lg btn-block">
                     Get the book
@@ -152,6 +152,16 @@
                     subButton.disabled = false;
                 }
             }
+        }
+        if ("@Model.InWishlist" == "True") {
+            let btnWishlist = document.getElementById("adWishlist");
+            btnWishlist.disabled = true;
+            btnWishlist.classList.add("disabled")
+        }
+        if ("@Model.InCart" == "True") {
+            let btnWishlist = document.getElementById("adCart");
+            btnWishlist.disabled = true;
+            btnWishlist.classList.add("disabled")
         }
     })
     </script>
