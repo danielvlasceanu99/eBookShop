@@ -73,7 +73,8 @@ namespace EBookShop.Controllers
                 model.Book = await _context.Book.Include(book => book.ReviewList)
                     .FirstOrDefaultAsync(book => book.Id == model.Review.BookID);
 
-                model.Book.Rating = model.Book.Rating * model.Book.ReviewList.Count() + model.Review.Rating;
+                model.Book.Rating = (model.Book.Rating * (model.Book.ReviewList.Count() - 1) + model.Review.Rating)/
+                    model.Book.ReviewList.Count();
                 _context.Update(model.Book);
 
                 await _context.SaveChangesAsync();
