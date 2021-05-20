@@ -53,10 +53,10 @@ namespace EBookShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GetBook(
-            [Bind("CardHolderName,CardNumber,ExpiryMonth,ExpiryYear,CVV")] PaymentInfo paymentInfo)
+            [Bind("CardHolderName,CardNumber,ExpiryDate,CVV")] PaymentInfo paymentInfo)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var items = await _context.Cart.Include(x => x.Book).ToListAsync();
+            var items = await _context.Cart.Include(x => x.Book).ThenInclude(auth => auth.Author).ToListAsync();
             items = items.Where(m => m.UserID == userId).ToList();
             if (TryValidateModel(paymentInfo, nameof(PaymentInfo)))
             {

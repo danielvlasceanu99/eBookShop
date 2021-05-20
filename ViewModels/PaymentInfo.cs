@@ -13,14 +13,12 @@ namespace EBookShop.ViewModels
         public string CardHolderName { get; set; }
         
         [Required]
-        [StringLength(30)]
+        [StringLength(19)]
         public string CardNumber { get; set; }
         
         [Required]
-        public string ExpiryMonth { get; set; }
-        
-        [Required]
-        public string ExpiryYear { get; set; }
+        [StringLength(5)]
+        public string ExpiryDate { get; set; }
         
         [Required]
         [RegularExpression(@"^[0-9]{3,4}$")]
