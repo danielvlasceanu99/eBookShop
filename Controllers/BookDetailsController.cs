@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -86,9 +87,10 @@ namespace EBookShop.Controllers
         public ActionResult DownloadDocument(int id, string type)
         {
             var file = _context.File.FirstOrDefaultAsync(m => m.BookID == id && string.Equals(m.Type, type.ToUpper()) == true);
-            
+
+            string dirPath = Directory.GetCurrentDirectory();
             string fileName = file.Result.FileName + "." + type;
-            string filePath = "C:/Users/danie/OneDrive/Books/" + type + "/" + fileName;
+            string filePath = dirPath + "/_Books/" + type + "/" + fileName;
             
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
 

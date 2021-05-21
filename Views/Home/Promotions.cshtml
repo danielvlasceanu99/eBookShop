@@ -1,0 +1,50 @@
+﻿@model EBookShop.ViewModels.BookListViewModel
+@{
+    ViewData["Title"] = "Sales";
+}
+
+<div class="col-md-12">
+    <h2 class="display-4">Sales</h2>
+</div>
+
+<div>
+    @for (int i = 0; i < Model.Books.Count; i++)
+    {
+        <div class="media p-3">
+            @{string src = "https://drive.google.com/uc?export=view&id=" + @Model.Books[i].ImageId; }
+            <img src=@src class="align-self-center mr-3" width="115" height="160" alt=@Model.Books[i].Title>
+            <div class="media-body">
+                <h4 class="d-flex justify-content-md-between align-items-md-start">
+                    <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@Model.Books[i].Id" class="text-decoration-none text-dark">
+                        @Model.Books[i].Title
+                    </a>
+                    @if (@Model.Books[i].Discount != 0)
+                    {
+                        <span>
+                            <span class="badge">
+                                <del class="text-danger">$@Model.Books[i].Price</del>
+                                <sup class="text-danger">-@(String.Format("{0:#,##}", Model.Books[i].Discount *100))%</sup>
+                                $@(String.Format("{0:#,##.##}", (float)(1 - Model.Books[i].Discount) * Model.Books[i].Price))
+                            </span>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge">$@Model.Books[i].Price</span>
+                    }
+                </h4>
+                <small>ISBN: @Model.Books[i].ISBN</small>
+                <p>
+                    by <a asp-controller="AuthorDetails" asp-action="Details" asp-route-id="@Model.Books[i].Author.Id" class="text-decoration-none text-dark">
+                        @Model.Books[i].Author.Name
+                    </a>
+                </p>
+                <p class="font-weight-bold">Rrating: @Model.Books[i].Rating/5</p>
+                @foreach (GenreToBookAssociation g in Model.Books[i].GenreList)
+                {
+                    <span class="badge badge-secondary">@g.Genre.GenreName</span>
+                }
+            </div>
+        </div>
+    }
+</div>

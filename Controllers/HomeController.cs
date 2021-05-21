@@ -51,6 +51,54 @@ namespace EBookShop.Controllers
             return View(bookListVM);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> BestSellers()
+        {
+            var books = await _context.Book.Include(x => x.Author)
+                .Include(x => x.GenreList).ThenInclude(x => x.Genre).ToListAsync();
+            var purchase = await _context.BookToUser.ToListAsync();
+
+            List<int> counts = new List<int>();
+            foreach(Book book in books)
+            {
+                int count = purchase.Where(x => x.BookID == book.Id).ToList().Count();
+            }
+
+            for(int i = 0; i < counts.Count() - 1; i++)
+            {
+                for(int j = i+1; j<counts.Count; j++)
+                {
+                    if(counts[i] < counts[j])
+                    {
+                        int x = counts[j];
+                        counts[i] = counts[j];
+                        counts[j] = x;
+
+                        Book b = books[i];
+                        books[i] = books[j];
+                        books[j] = b;
+                    }
+                }
+            }
+            var bookListVM = new BookListViewModel
+            {
+                Books = books
+            };
+            return View(bookListVM);
+        }
+        public async Task<IActionResult> Promotions()
+        {
+            var books = await _context.Book.Include(x => x.Author)
+                .Include(x => x.GenreList).ThenInclude(x => x.Genre).ToListAsync();
+            books = books.Where(book => book.Discount != 0).ToList();
+
+            var bookListVM = new BookListViewModel
+            {
+                Books = books
+            };
+            return View(bookListVM);
+        }
+
         public IActionResult Privacy()
         {
             return View();

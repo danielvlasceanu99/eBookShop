@@ -4,9 +4,12 @@
 }
 
 <div class="col-md-12">
-    <h2 class="display-4">Books</h2>
+    <a asp-controller="Home" asp-action="Promotions">
+        <img src="https://drive.google.com/uc?export=view&id=1kZQk3gmxG5YwdSE5fjRWr6J9G9Nczrg1"
+             class="mx-auto d-block" style="width:100%">
+    </a>
 </div>
-
+<br />
 <div class="row">
     <div class="dropdown col-md-3 dropleft">
         <div class="col-md-12">
@@ -63,9 +66,11 @@
                     }
                 </h4>
                 <small>ISBN: @Model.Books[i].ISBN</small>
-                <p>by <a asp-controller="AuthorDetails" asp-action="Details" asp-route-id="@Model.Books[i].Author.Id" class="text-decoration-none text-dark">
+                <p>
+                    by <a asp-controller="AuthorDetails" asp-action="Details" asp-route-id="@Model.Books[i].Author.Id" class="text-decoration-none text-dark">
                         @Model.Books[i].Author.Name
-                    </a></p>
+                    </a>
+                </p>
                 <p class="font-weight-bold">Rrating: @Model.Books[i].Rating/5</p>
                 @foreach (GenreToBookAssociation g in Model.Books[i].GenreList)
                 {
