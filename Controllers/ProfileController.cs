@@ -29,6 +29,7 @@ namespace EBookShop.Controllers
             user.BookList = await _context.BookToUser
                 .Include(x => x.Book).ThenInclude(g => g.GenreList)
                 .ThenInclude(x=>x.Genre).ToListAsync();
+            user.BookList = user.BookList.Where(book => book.UserID == user.Id).ToList();
             return View(user);
         }
 
@@ -38,6 +39,7 @@ namespace EBookShop.Controllers
             user.WishlistList = await _context.Wishlist
                 .Include(x => x.Book).ThenInclude(g => g.GenreList)
                 .ThenInclude(x => x.Genre).ToListAsync();
+            user.WishlistList = user.WishlistList.Where(book => book.UserID == user.Id).ToList();
             return View(user);
         }
 
@@ -47,6 +49,7 @@ namespace EBookShop.Controllers
             user.CartList = await _context.Cart
                 .Include(x => x.Book).ThenInclude(g => g.GenreList)
                 .ThenInclude(x => x.Genre).ToListAsync();
+            user.CartList = user.CartList.Where(book => book.UserID == user.Id).ToList();
             return View(user);
         }
     }

@@ -1,4 +1,7 @@
 ﻿<!DOCTYPE html>
+@using Microsoft.AspNetCore.Identity
+@using EBookShop.Areas.Identity.Data
+@inject UserManager<User> UserManager
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,6 +43,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Promotions">Promotions</a>
                         </li>
+                        @if (UserManager.GetUserId(User) == "ac830c71-2302-4a35-a627-c17b3bad5f15")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Reports</a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">

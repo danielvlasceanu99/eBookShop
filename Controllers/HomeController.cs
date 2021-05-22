@@ -66,11 +66,11 @@ namespace EBookShop.Controllers
 
             for(int i = 0; i < counts.Count() - 1; i++)
             {
-                for(int j = i+1; j<counts.Count; j++)
+                for(int j = i+1; j<counts.Count(); j++)
                 {
                     if(counts[i] < counts[j])
                     {
-                        int x = counts[j];
+                        int x = counts[i];
                         counts[i] = counts[j];
                         counts[j] = x;
 
