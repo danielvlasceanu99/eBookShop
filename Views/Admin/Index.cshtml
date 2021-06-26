@@ -1,0 +1,146 @@
+﻿@model EBookShop.ViewModels.AdminViewModel
+@{
+    ViewData["Title"] = "Admin page";
+}
+
+<div>
+    <div id="plotOned" class="col-md-12"></div>
+    <hr />
+    <div id="plotWishlist" class="col-md-12"></div>
+    <hr />
+    <div id="plotCart" class="col-md-12"></div>
+    <hr />
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary" id="download">Download as CSV</button>
+    </div>
+    <br />
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Title</th>
+                    <th>Number of copies sold</th>
+                    <th>Number of copies in wishlist</th>
+                    <th>Number of copies in cart</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Titles.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.Titles[i]</td>
+                        <td>@Model.OwnedNo[i]</td>
+                        <td>@Model.WishlistNo[i]</td>
+                        <td>@Model.CartNo[i]</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot style="background-color: #e9ecef;" class="shadow">
+                @{
+                    double ownedSum = Model.Prices.Select((n, i) => n * Model.OwnedNo[i]).Sum();
+                    double wishlistSum = Model.Prices.Select((n, i) => n * Model.WishlistNo[i]).Sum();
+                    double cartSum = Model.Prices.Select((n, i) => n * Model.CartNo[i]).Sum();
+                }
+                <tr>
+                    <td class="font-weight-bold">Revenue(recived or to get)</td>
+                    <td class="font-weight-bold">$@(String.Format("{0:##,##}", ownedSum))</td>
+                    <td class="font-weight-bold">$@(String.Format("{0:##,##}", wishlistSum))</td>
+                    <td class="font-weight-bold">$@(String.Format("{0:##,##}", cartSum))</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@section AdminScript{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var data = @Html.Raw(Json.Serialize(Model));
+
+            bougthChart(data);
+            wishlistChart(data);
+            cartNoChart(data);
+            console.log(data);
+
+            document.getElementById("download").onclick = function downloadData() {
+                let csvContent = "data:text/csv;charset=utf-8,";
+                for (var i = 0; i < data.titles.length; i++) {
+                    csvContent += data.titles[i] + "," + data.ownedNo[i] + ","
+                        + data.wishlistNo[i] + "," + data.cartNo[i] + ",\n"; 
+                }
+                console.log(csvContent);
+                var encodedUri = encodeURI(csvContent);
+                var link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "data.csv");
+                document.body.appendChild(link);
+                link.click();
+            }
+
+        });
+
+        function bougthChart(data) {
+            let titles = Array.from(data.titles);
+            let ownedNo = Array.from(data.ownedNo);
+
+            for (var i = 0; i < titles.length; i++) {
+                if (ownedNo[i] == 0) {
+                    titles.splice(i, 1);
+                    ownedNo.splice(i, 1);
+                    i--;
+                }
+            }
+            var values = [{
+                x: titles,
+                y: ownedNo,
+                type: "bar"
+            }];
+            var layout = {
+                title: "Number of copies bought",
+            };
+            Plotly.newPlot("plotOned", values, layout);
+        }
+        function wishlistChart(data) {
+            let titles = Array.from(data.titles);
+            let wishlistNo = Array.from(data.wishlistNo);
+
+            for (var i = 0; i < titles.length; i++) {
+                if (wishlistNo[i] == 0) {
+                    titles.splice(i, 1);
+                    wishlistNo.splice(i, 1);
+                    i--;
+                }
+            }
+            var values = [{
+                x: titles,
+                y: wishlistNo,
+                type: "bar"
+            }];
+            var layout = {
+                title: "Number of copies in wishlist",
+            };
+            Plotly.newPlot("plotWishlist", values, layout);
+        }
+        function cartNoChart(data) {
+            let titles = Array.from(data.titles);
+            let cartNo = Array.from(data.cartNo);
+
+            for (var i = 0; i < titles.length; i++) {
+                if (cartNo[i] == 0) {
+                    titles.splice(i, 1);
+                    cartNo.splice(i, 1);
+                    i--;
+                }
+            }
+            var values = [{
+                x: titles,
+                y: cartNo,
+                type: "bar"
+            }];
+            var layout = {
+                title: "Number of copies in cart",
+            };
+            Plotly.newPlot("plotCart", values, layout);
+        }
+    </script>
+}

@@ -524,3 +524,4 @@ D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Cart
 D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Wishlist.cshtml.g.cs
 D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\Home\BestSellers.cshtml.g.cs
 D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\Home\Promotions.cshtml.g.cs
+D:\AN_3_SEM_2\Licenta\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Index.cshtml.g.cs

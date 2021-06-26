@@ -62,6 +62,7 @@ namespace EBookShop.Controllers
             foreach(Book book in books)
             {
                 int count = purchase.Where(x => x.BookID == book.Id).ToList().Count();
+                counts.Add(count);
             }
 
             for(int i = 0; i < counts.Count() - 1; i++)
