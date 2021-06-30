@@ -13,7 +13,7 @@ namespace EBookShop.ViewModels
         public string CardHolderName { get; set; }
         
         [Required]
-        [StringLength(19)]
+        [StringLength(19, MinimumLength = 19, ErrorMessage = "The card number must be 19 characters long")]
         public string CardNumber { get; set; }
         
         [Required]

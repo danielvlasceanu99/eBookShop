@@ -42,10 +42,18 @@
                     double cartSum = Model.Prices.Select((n, i) => n * Model.CartNo[i]).Sum();
                 }
                 <tr>
-                    <td class="font-weight-bold">Revenue(recived or to get)</td>
+                    <td></td>  
                     <td class="font-weight-bold">$@(String.Format("{0:##,##}", ownedSum))</td>
                     <td class="font-weight-bold">$@(String.Format("{0:##,##}", wishlistSum))</td>
                     <td class="font-weight-bold">$@(String.Format("{0:##,##}", cartSum))</td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold" rowspan="2">
+                        Total possible revenue: $@(String.Format("{0:##,##}", ownedSum + wishlistSum + cartSum))
+                    </td>
+                    <th>Of copies sold</th>
+                    <th>Of copies in wishlist</th>
+                    <th>Of copies in cart</th>
                 </tr>
             </tfoot>
         </table>

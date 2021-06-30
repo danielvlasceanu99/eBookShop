@@ -51,6 +51,21 @@ namespace EBookShop.Controllers
                 CartNo.Add(count);
             }
 
+            //OwnedNo[0] = 47;
+            //OwnedNo[1] = 96;
+            //OwnedNo[2] = 14;
+            //OwnedNo[3] = 29;
+            //OwnedNo[4] = 14;
+            //OwnedNo[54] = 43;
+            //OwnedNo[53] = 91;
+            //OwnedNo[52] = 70;
+            //OwnedNo[51] = 20;
+            //OwnedNo[50] = 73;
+            //WishlistNo[0] = 87;
+            //CartNo[2] = 92;
+            //WishlistNo[51] = 59;
+            //CartNo[50] = 11;
+
             var adminVM = new AdminViewModel
             {
                 Titles = titles,
