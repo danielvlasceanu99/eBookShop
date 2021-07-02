@@ -704,3 +704,4 @@ D:\Licenta\eBookShop\obj\Debug\netcoreapp3.1\staticwebassets\EBookShop.StaticWeb
 D:\Licenta\eBookShop\obj\Debug\netcoreapp3.1\EBookShop.dll
 D:\Licenta\eBookShop\obj\Debug\netcoreapp3.1\EBookShop.pdb
 D:\Licenta\eBookShop\obj\Debug\netcoreapp3.1\EBookShop.genruntimeconfig.cache
+D:\Licenta\eBookShop\obj\Debug\netcoreapp3.1\Razor\Views\GetBook\ConfirmPurchase.cshtml.g.cs

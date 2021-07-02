@@ -47,7 +47,7 @@ namespace EBookShop.Controllers
             List<int> CartNo = new List<int>();
             foreach (Book book in books)
             {
-                int count = wishlist.Where(x => x.BookID == book.Id).ToList().Count();
+                int count = cart.Where(x => x.BookID == book.Id).ToList().Count();
                 CartNo.Add(count);
             }
 

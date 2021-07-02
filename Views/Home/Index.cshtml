@@ -71,7 +71,21 @@
                         @Model.Books[i].Author.Name
                     </a>
                 </p>
-                <p class="font-weight-bold">Rrating: @Model.Books[i].Rating/5</p>
+                @if (Model.Books[i].Rating != 0)
+                {
+                    <p class="font-weight-bold">
+                        Rrating: @(String.Format("{0:#,##.##}", (float)(Model.Books[i].Rating)))/5
+                        <i class="fas fa-book-open" style="color:#111111"></i>
+                    </p>
+                }
+                else
+                {
+                    <p class="font-weight-bold">
+                        Rrating: 0/5
+                        <i class="fas fa-book-open" style="color:#111111"></i>
+                    </p>
+                }
+
                 @foreach (GenreToBookAssociation g in Model.Books[i].GenreList)
                 {
                     <span class="badge badge-secondary">@g.Genre.GenreName</span>

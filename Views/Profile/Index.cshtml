@@ -38,7 +38,20 @@
                         <a asp-controller="BookDetails" asp-action="Details" asp-route-id="@book.Book.Id" class="text-decoration-none text-dark">
                             <h4>@book.Book.Title</h4>
                         </a>
-                        <p class="font-weight-bold">Rating: @book.Book.Rating/5</p>
+                        @if (book.Book.Rating != 0)
+                        {
+                            <p class="font-weight-bold">
+                                Rating: @(String.Format("{0:#,##.##}", (float)(book.Book.Rating)))/5
+                                <i class="fas fa-book-open" style="color:#111111"></i>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="font-weight-bold">
+                                Rrating: 0/5
+                                <i class="fas fa-book-open" style="color:#111111"></i>
+                            </p>
+                        }
                         @foreach (GenreToBookAssociation g in book.Book.GenreList)
                         {
                             <span class="badge badge-secondary">@g.Genre.GenreName</span>

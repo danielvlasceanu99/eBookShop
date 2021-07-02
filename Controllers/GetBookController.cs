@@ -78,7 +78,7 @@ namespace EBookShop.Controllers
                     }
                 }
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Profile");
+                return RedirectToAction("ConfirmPurchase", "GetBook");
             }
 
             var getBookVM = new GetBookViewModel()
@@ -86,6 +86,12 @@ namespace EBookShop.Controllers
                 books = items
             };
             return View(getBookVM);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> ConfirmPurchase()
+        {
+            return View();
         }
 
         [Authorize]
@@ -149,6 +155,7 @@ namespace EBookShop.Controllers
             return RedirectToAction("Details", "BookDetails", new { id = (int)id });
         }
 
+        [Authorize]
         public async Task<IActionResult> MoveToCart(int? id)
         {
             if (id == null)
@@ -187,6 +194,7 @@ namespace EBookShop.Controllers
             return RedirectToAction("Wishlist", "Profile");
         }
 
+        [Authorize]
         public async Task<IActionResult> RemoveFromWishlist(int? id)
         {
             if (id == null)
@@ -211,6 +219,7 @@ namespace EBookShop.Controllers
             return RedirectToAction("Wishlist", "Profile");
         }
 
+        [Authorize]
         public async Task<IActionResult> RemoveFromCart(int? id)
         {
             if (id == null)
@@ -234,6 +243,7 @@ namespace EBookShop.Controllers
             return RedirectToAction("Cart", "Profile");
         }
 
+        [Authorize]
         public async Task<IActionResult> AddAllToCart()
         {
             var bookList = await _context.Wishlist.ToListAsync();

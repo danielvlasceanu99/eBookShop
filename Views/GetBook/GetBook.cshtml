@@ -140,15 +140,17 @@
         });
 
         function validateForm() {
-            console.log(vaidateCardNumber() && vaidateExpireDate());
+            console.log("total", vaidateCardNumber() && vaidateExpireDate());
+            console.log("Data", vaidateExpireDate());
+            console.log("Numar", vaidateCardNumber());
             document.getElementById("dateErr").innerText = "";
-            ocument.getElementById("noErr").innerText = "";
+            document.getElementById("noErr").innerText = "";
+            //alert("sdsadasdsa")
             return vaidateCardNumber() && vaidateExpireDate();
             //return vaidateExpireDate();
         }
 
         function vaidateCardNumber() {
-            console.log("verifica numar");
             var cardNumber = document.getElementById("cardNumber").value;
             let error = document.getElementById("noErr");
 
@@ -164,7 +166,6 @@
                         temp *= 2;
                     }
                     sum += temp >= 10 ? temp - 9 : temp;
-                    console.log(temp, sum);
                 }
                 var check = (sum * 9) % 10;
                 if (check === parseInt(cardNumber[15], 10)) {
@@ -176,7 +177,6 @@
             }
         }
         function vaidateExpireDate() {
-            console.log("verifica data");
             var cardNumber = document.getElementById("expDate").value;
             let error = document.getElementById("dateErr");
 

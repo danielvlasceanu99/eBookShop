@@ -51,7 +51,20 @@
                         <img src=@srcBook class="align-self-start mr-3" style="width:50px; height:75px" alt=@book.Title>
                         <div class="media-body">
                             <h4>@book.Title</h4>
-                            <p class="font-weight-bold">Rating: @book.Rating/5</p>
+                            @if(book.Rating != 0)
+                            {
+                                <p class="font-weight-bold">
+                                    Rating: @(String.Format("{0:#,##.##}", (float)(book.Rating)))/5
+                                    <i class="fas fa-book-open" style="color:#111111"></i>
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="font-weight-bold">
+                                    Rating: 0/5
+                                    <i class="fas fa-book-open" style="color:#111111"></i>
+                                </p>
+                            }
                         </div>
                     </div>
                 </a>

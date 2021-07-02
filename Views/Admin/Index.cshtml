@@ -5,10 +5,16 @@
 
 <div>
     <div id="plotOned" class="col-md-12"></div>
+    <br />
+    <div id="descOned" class="col-md-12 text-justify"></div>
     <hr />
     <div id="plotWishlist" class="col-md-12"></div>
+    <br />
+    <div id="descWishlist" class="col-md-12 text-justify"></div>
     <hr />
     <div id="plotCart" class="col-md-12"></div>
+    <br />
+    <div id="descCart" class="col-md-12 text-justify"></div>
     <hr />
     <div class="col-md-12">
         <button type="button" class="btn btn-primary" id="download">Download as CSV</button>
@@ -42,15 +48,44 @@
                     double cartSum = Model.Prices.Select((n, i) => n * Model.CartNo[i]).Sum();
                 }
                 <tr>
-                    <td></td>  
-                    <td class="font-weight-bold">$@(String.Format("{0:##,##}", ownedSum))</td>
-                    <td class="font-weight-bold">$@(String.Format("{0:##,##}", wishlistSum))</td>
-                    <td class="font-weight-bold">$@(String.Format("{0:##,##}", cartSum))</td>
+                    <td></td>
+                    @if (ownedSum != 0)
+                    {
+                        <td class="font-weight-bold">$@(String.Format("{0:#,##.##}", ownedSum))</td>
+                    }
+                    else
+                    {
+                        <td class="font-weight-bold">$0</td>
+                    }
+
+                    @if (wishlistSum != 0)
+                    {
+                        <td class="font-weight-bold">$@(String.Format("{0:#,##.##}", wishlistSum))</td>
+                    }
+                    else
+                    {
+                        <td class="font-weight-bold">$0</td>
+                    }
+                    @if (cartSum != 0)
+                    {
+                        <td class="font-weight-bold">$@(String.Format("{0:#,##.##}", cartSum))</td>
+                    }
+                    else
+                    {
+                        <td class="font-weight-bold">$0</td>
+                    }
                 </tr>
                 <tr>
-                    <td class="font-weight-bold" rowspan="2">
-                        Total possible revenue: $@(String.Format("{0:##,##}", ownedSum + wishlistSum + cartSum))
-                    </td>
+                    @if (ownedSum + wishlistSum + cartSum == 0)
+                    {
+                        <td class="font-weight-bold" rowspan="2">Total possible revenue: $0</td>
+                    }
+                    else
+                    {
+                        <td class="font-weight-bold" rowspan="2">
+                            Total possible revenue: $@(String.Format("{0:##,##}", ownedSum + wishlistSum + cartSum))
+                        </td>
+                    }
                     <th>Of copies sold</th>
                     <th>Of copies in wishlist</th>
                     <th>Of copies in cart</th>
@@ -68,7 +103,10 @@
             bougthChart(data);
             wishlistChart(data);
             cartNoChart(data);
-            console.log(data);
+
+            writeDescriptionOwned(data);
+            writeDescriptionCart(data);
+            writeDescriptionWishlist(data);
 
             document.getElementById("download").onclick = function downloadData() {
                 let csvContent = "data:text/csv;charset=utf-8,";
@@ -76,7 +114,6 @@
                     csvContent += data.titles[i] + "," + data.ownedNo[i] + ","
                         + data.wishlistNo[i] + "," + data.cartNo[i] + ",\n"; 
                 }
-                console.log(csvContent);
                 var encodedUri = encodeURI(csvContent);
                 var link = document.createElement("a");
                 link.setAttribute("href", encodedUri);
@@ -150,5 +187,126 @@
             };
             Plotly.newPlot("plotCart", values, layout);
         }
+
+        function writeDescriptionOwned(data) {
+            let titles = Array.from(data.titles);
+            let ownedNo = Array.from(data.ownedNo);
+
+            for (var i = 0; i < titles.length; i++) {
+                if (ownedNo[i] == 0) {
+                    titles.splice(i, 1);
+                    ownedNo.splice(i, 1);
+                    i--;
+                }
+            }
+
+            let content = document.getElementById("descOned");
+
+            if (ownedNo.length == 0) {
+                content.innerText = "No books have been bougth, so there is no data to display."
+            } else if (ownedNo.length == 1) {
+                content.innerText = `Only ${ownedNo[0]} copies of ${titles[0]} have been sold`
+            } else {
+                let minIndex = 0;
+                let maxIndex = 0;
+                let min = ownedNo[0];
+                let max = ownedNo[0];
+
+                for (var i = 1; i < ownedNo.length; i++) {
+                    if (ownedNo[i] < min) {
+                        min = ownedNo[i];
+                        minIndex = i;
+                    }
+                    if (ownedNo[i] > max) {
+                        max = ownedNo[i];
+                        maxIndex = i;
+                    }
+                }
+                console.log(minIndex, maxIndex);
+                content.innerText = `In the chart above we can see the number of copies sold form each book. `;
+                content.innerText += `The most popular one is ${titles[maxIndex]} with ${ownedNo[maxIndex]} copies sold. `;
+                content.innerText += `The least popular one is ${titles[minIndex]} with ${ownedNo[minIndex]} copies sold.`;
+            }
+        }
+        function writeDescriptionCart(data) {
+            let titles = Array.from(data.titles);
+            let cartNo = Array.from(data.cartNo);
+
+            for (var i = 0; i < titles.length; i++) {
+                if (cartNo[i] == 0) {
+                    titles.splice(i, 1);
+                    cartNo.splice(i, 1);
+                    i--;
+                }
+            }
+
+            let content = document.getElementById("descCart");
+
+            if (cartNo.length == 0) {
+                content.innerText = "No books have been added to a cart, so there is no data to display."
+            } else if (cartNo.length == 1) {
+                content.innerText = `Only ${cartNo[0]} copies of ${titles[0]} have been added to carts.`
+            } else {
+                let minIndex = 0;
+                let maxIndex = 0;
+                let min = cartNo[0];
+                let max = cartNo[0];
+
+                for (var i = 1; i < cartNo.length; i++) {
+                    if (cartNo[i] < min) {
+                        min = cartNo[i];
+                        minIndex = i;
+                    }
+                    if (cartNo[i] > max) {
+                        max = cartNo[i];
+                        maxIndex = i;
+                    }
+                }
+                console.log(minIndex, maxIndex);
+                content.innerText = `In the chart above we can see the number of copies added to carts form each book. `;
+                content.innerText += `The most added book is ${titles[maxIndex]} with ${cartNo[maxIndex]} copies sold. `;
+                content.innerText += `The least added book is ${titles[minIndex]} with ${cartNo[minIndex]} copies sold.`;
+            }
+        }
+        function writeDescriptionWishlist(data) {
+            let titles = Array.from(data.titles);
+            let wishlistNo = Array.from(data.wishlistNo);
+
+            for (var i = 0; i < titles.length; i++) {
+                if (wishlistNo[i] == 0) {
+                    titles.splice(i, 1);
+                    wishlistNo.splice(i, 1);
+                    i--;
+                }
+            }
+
+            let content = document.getElementById("descWishlist");
+
+            if (wishlistNo.length == 0) {
+                content.innerText = "No books have been added to a wishlist, so there is no data to display."
+            } else if (wishlistNo.length == 1) {
+                content.innerText = `Only ${wishlistNo[0]} copies of ${titles[0]} have been added to wishlists.`
+            } else {
+                let minIndex = 0;
+                let maxIndex = 0;
+                let min = wishlistNo[0];
+                let max = wishlistNo[0];
+
+                for (var i = 1; i < wishlistNo.length; i++) {
+                    if (wishlistNo[i] < min) {
+                        min = wishlistNo[i];
+                        minIndex = i;
+                    }
+                    if (wishlistNo[i] > max) {
+                        max = wishlistNo[i];
+                        maxIndex = i;
+                    }
+                }
+                content.innerText = `In the chart above we can see the number of copies added to wishlists form each book. `;
+                content.innerText += `The most wanted book is ${titles[maxIndex]} with ${wishlistNo[maxIndex]} copies added to wishlists. `;
+                content.innerText += `The least wanted book is ${titles[minIndex]} with ${wishlistNo[minIndex]} copies added to wishlists.`;
+            }
+        }
+
     </script>
 }

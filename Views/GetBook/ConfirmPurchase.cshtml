@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Confirm purchase";
+}
+
+<div>
+    <div class="d-flex justify-content-center mb-3">
+        <div class="text align-self-center p-2" id="gif">
+            <div class="spinner-grow text-secondary"></div>
+            <div class="spinner-grow text-secondary"></div>
+            <div class="spinner-grow text-secondary"></div>
+        </div>
+    </div>
+    <br />
+    <div class="d-flex justify-content-center mb-3">
+        <h1 class="display-4 font-weight-bold" id="text">
+            Processing your purchase...
+        </h1>
+    </div>
+    <br />
+    <div class="d-flex justify-content-center mb-3">
+        <a asp-controller="Profile" asp-action="Index" class="btn btn-secondary" style="visibility:hidden" id="go-profile">
+            Go to profile
+        </a>
+    </div>
+</div>
+@section ConfirmScript{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                var gif = document.getElementById("gif");
+                var text = document.getElementById("text");
+                var cont = document.getElementById("cont");
+
+                var img = document.createElement("img");
+                img.src = "https://drive.google.com/uc?export=view&id=1AzBiZ3vTWvB5FRcG58EjCjdAazqF0s3d"
+                img.style = "height: 200px; width: 200px"
+
+                gif.innerHTML = "";
+                gif.append(img);
+                text.innerText = "Purchase completed.";
+
+                var link = document.getElementById("go-profile");
+                link.style = "";
+            }, 1000);
+        })
+    </script>
+}
