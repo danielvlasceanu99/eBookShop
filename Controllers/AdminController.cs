@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EBookShop.Data;
 using EBookShop.Models;
 using EBookShop.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -21,6 +23,7 @@ namespace EBookShop.Controllers
             _logger = logger;
             _context = context;
         }
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var books = await _context.Book.ToListAsync();
@@ -75,7 +78,17 @@ namespace EBookShop.Controllers
                 Prices = prices
             };
 
-            return View(adminVM);
+            string userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.Equals(userID, "dc862d71-0265-4532-9873-865d8b371511"))
+            {
+                return View(adminVM);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            
         }
     }
 }
